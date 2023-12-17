@@ -42,10 +42,15 @@ const IndexPage = () => {
         });
   
         if (response.ok) {
-          // Handle successful submission
           console.log('Submitted successfully');
+  
+          // Reset selections
+          setSelections({ kill: null, marry: null, fuck: null });
+  
+          // Re-fetch images
+          fetchImages(); // Assuming fetchImages is the function you used to initially fetch the images
+  
         } else {
-          // Handle errors
           console.error('Submission failed');
         }
       } catch (error) {
@@ -55,6 +60,26 @@ const IndexPage = () => {
       console.error('Please make a unique selection for each category');
     }
   };
+  
+  // Make sure fetchImages function is accessible outside useEffect
+  const fetchImages = async () => {
+    const response = await fetch('/api/download');
+    if (response.ok) {
+      const data = await response.json();
+      if (data.images && Array.isArray(data.images)) {
+        setImages(data.images.sort(() => 0.5 - Math.random()).slice(0, 3));
+      } else {
+        console.error('Data does not have an images array:', data);
+      }
+    } else {
+      console.error('Failed to fetch images');
+    }
+  };
+  
+  useEffect(() => {
+    fetchImages();
+  }, []);
+  
   
 
   return (

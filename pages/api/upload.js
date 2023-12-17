@@ -2,16 +2,13 @@ import { MongoClient } from 'mongodb';
 import multer from 'multer';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 
-// Configure multer for file handling
 const upload = multer();
 
-// MongoDB connection
 async function connectToDatabase() {
   const client = await MongoClient.connect(process.env.MONGODB_URI);
   return client.db();
 }
 
-// AWS S3 client configuration
 const s3Client = new S3Client({
   region: process.env.AWS_REGION,
   credentials: {
@@ -20,7 +17,6 @@ const s3Client = new S3Client({
   },
 });
 
-// Function to upload a file to S3
 async function uploadToS3(file, bucketName, key) {
   const command = new PutObjectCommand({
     Bucket: bucketName,
@@ -51,36 +47,30 @@ export default function handler(req, res) {
       const collection = db.collection('images');
       const file = req.file;
 
-      // Retrieve additional data from the request
+      // Retrieve additional data and score from the request
       const personId = req.body.person;
       const kill = parseInt(req.body.kill);
       const marry = parseInt(req.body.marry);
       const fuck = parseInt(req.body.fuck);
+      const score = parseInt(req.body.score);  // Retrieve score
 
-      console.log('Received file:', file);
-      console.log('Person ID:', personId);
-
-      // Define a unique file name for the S3 bucket
       const fileName = `uploads/${Date.now()}-${file.originalname}`;
 
-      // Upload file to S3
       const fileUrl = await uploadToS3(file, process.env.AWS_BUCKET_NAME, fileName);
-      console.log('File URL:', fileUrl);
 
-      // Save metadata in MongoDB
+      // Save metadata including score in MongoDB
       const metadata = {
         filename: fileName,
         url: fileUrl,
-        personId: personId, // Include the person ID
+        personId,
         uploadDate: new Date(),
         kill,
         marry,
-        fuck
+        fuck,
+        score  // Include score in the metadata
       };
 
       const result = await collection.insertOne(metadata);
-      console.log('MongoDB insert result:', result);
-
       res.status(200).json({ message: 'Image uploaded successfully', data: result });
     } catch (dbError) {
       console.error('MongoDB error:', dbError);

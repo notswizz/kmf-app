@@ -7,6 +7,7 @@ const AddPic = () => {
   const [killCount, setKillCount] = useState(0);
   const [marryCount, setMarryCount] = useState(0);
   const [fuckCount, setFuckCount] = useState(0);
+  const [score, setScore] = useState(0); // Initialize score to 0
 
   useEffect(() => {
     const fetchPeople = async () => {
@@ -26,6 +27,16 @@ const AddPic = () => {
     fetchPeople();
   }, []);
 
+  const calculateScore = () => {
+    return marryCount * 3 + fuckCount * 1 - killCount * 5;
+  };
+
+  useEffect(() => {
+    // Update score whenever killCount, marryCount, or fuckCount changes
+    const newScore = marryCount * 3 + fuckCount * 1 - killCount * 5;
+    setScore(newScore);
+  }, [killCount, marryCount, fuckCount]);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -36,6 +47,7 @@ const AddPic = () => {
       formData.append('kill', killCount);
       formData.append('marry', marryCount);
       formData.append('fuck', fuckCount);
+      formData.append('score', score); // Append score to the form data
 
       try {
         const response = await fetch('/api/upload', {
@@ -43,22 +55,23 @@ const AddPic = () => {
           body: formData,
         });
 
-        if (response.ok) {
-          console.log("Image uploaded successfully");
-          // Handle success
-          setImage(null); // Clear the image state
-        } else {
-          console.error("Upload failed");
-          // Handle error
-        }
+       // Inside your handleSubmit function after the fetch call
+if (response.ok) {
+  console.log("Image uploaded successfully");
+  // Refresh the page to show new images or update state
+  window.location.reload(); // This refreshes the page
+} else {
+  console.error("Upload failed");
+}
+
       } catch (error) {
         console.error("Error during upload: ", error);
-        // Handle error
       }
     } else {
       console.error("No image selected");
     }
   };
+
 
   const handleImageChange = (event) => {
     setImage(event.target.files[0]);
