@@ -1,6 +1,7 @@
 import React from 'react';
-import AddPic from '../components/AddPic';
-import AddPerson from '../components/AddPerson';
+import AddPic from '../components/addPic';
+import AddPerson from '../components/addPerson';
+
 
 const AdminPage = () => {
   return (
