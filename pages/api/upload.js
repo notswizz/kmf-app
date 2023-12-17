@@ -1,5 +1,3 @@
-// pages/api/upload.js
-
 import { MongoClient } from 'mongodb';
 import multer from 'multer';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
@@ -42,47 +40,53 @@ async function uploadToS3(file, bucketName, key) {
 }
 
 export default function handler(req, res) {
-  if (req.method === 'POST') {
-    upload.single('image')(req, {}, async (error) => {
-      if (error) {
-        console.error('Multer error:', error);
-        return res.status(500).json({ error: error.message });
-      }
+  upload.single('image')(req, {}, async (error) => {
+    if (error) {
+      console.error('Multer error:', error);
+      return res.status(500).json({ error: error.message });
+    }
 
-      try {
-        const db = await connectToDatabase();
-        const collection = db.collection('images');
-        const file = req.file;
+    try {
+      const db = await connectToDatabase();
+      const collection = db.collection('images');
+      const file = req.file;
 
-        console.log('Received file:', file);
+      // Retrieve additional data from the request
+      const personId = req.body.person;
+      const kill = parseInt(req.body.kill);
+      const marry = parseInt(req.body.marry);
+      const fuck = parseInt(req.body.fuck);
 
-        // Define a unique file name for the S3 bucket
-        const fileName = `uploads/${Date.now()}-${file.originalname}`;
+      console.log('Received file:', file);
+      console.log('Person ID:', personId);
 
-        // Upload file to S3
-        const fileUrl = await uploadToS3(file, process.env.AWS_BUCKET_NAME, fileName);
-        console.log('File URL:', fileUrl);
+      // Define a unique file name for the S3 bucket
+      const fileName = `uploads/${Date.now()}-${file.originalname}`;
 
-        // Save metadata in MongoDB
-        const metadata = {
-          filename: fileName,
-          url: fileUrl,
-          uploadDate: new Date(),
-        };
+      // Upload file to S3
+      const fileUrl = await uploadToS3(file, process.env.AWS_BUCKET_NAME, fileName);
+      console.log('File URL:', fileUrl);
 
-        const result = await collection.insertOne(metadata);
-        console.log('MongoDB insert result:', result);
+      // Save metadata in MongoDB
+      const metadata = {
+        filename: fileName,
+        url: fileUrl,
+        personId: personId, // Include the person ID
+        uploadDate: new Date(),
+        kill,
+        marry,
+        fuck
+      };
 
-        res.status(200).json({ message: 'Image uploaded successfully', data: result });
-      } catch (dbError) {
-        console.error('MongoDB error:', dbError);
-        res.status(500).json({ error: dbError.message });
-      }
-    });
-  } else {
-    res.setHeader('Allow', ['POST']);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
-  }
+      const result = await collection.insertOne(metadata);
+      console.log('MongoDB insert result:', result);
+
+      res.status(200).json({ message: 'Image uploaded successfully', data: result });
+    } catch (dbError) {
+      console.error('MongoDB error:', dbError);
+      res.status(500).json({ error: dbError.message });
+    }
+  });
 }
 
 export const config = {
