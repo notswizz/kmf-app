@@ -61,13 +61,21 @@ const IndexPage = () => {
     }
   };
   
-  // Make sure fetchImages function is accessible outside useEffect
   const fetchImages = async () => {
     const response = await fetch('/api/download');
     if (response.ok) {
       const data = await response.json();
       if (data.images && Array.isArray(data.images)) {
-        setImages(data.images.sort(() => 0.5 - Math.random()).slice(0, 3));
+        // Ensure unique persons
+        const uniqueImages = new Set();
+        const selectedImages = [];
+        for (const image of data.images.sort(() => 0.5 - Math.random())) {
+          if (!uniqueImages.has(image.personId) && uniqueImages.size < 3) {
+            uniqueImages.add(image.personId);
+            selectedImages.push(image);
+          }
+        }
+        setImages(selectedImages);
       } else {
         console.error('Data does not have an images array:', data);
       }
@@ -87,10 +95,10 @@ const IndexPage = () => {
       <h1 className="text-2xl font-bold text-center mb-8">Images</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {images.map((image, index) => (
-          <div key={index} className="max-w-sm rounded overflow-hidden shadow-lg">
+          <div key={index} className="max-w-sm rounded overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 ease-in-out">
             <img className="w-full" src={image.url} alt={image.filename} />
             <div className="px-6 py-4">
-  <p className="text-gray-700 text-base">{image.filename}</p>
+              <p className="text-gray-700 text-base mb-4">{image.filename}</p>
   <button 
     onClick={() => handleSelection('kill', image._id)}
     className={`${
