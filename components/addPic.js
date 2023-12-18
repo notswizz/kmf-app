@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
 const AddPic = () => {
-  const [image, setImage] = useState(null);
+  const [images, setImages] = useState([]);
   const [people, setPeople] = useState([]);
   const [selectedPerson, setSelectedPerson] = useState('');
   const [killCount, setKillCount] = useState(0);
   const [marryCount, setMarryCount] = useState(0);
   const [fuckCount, setFuckCount] = useState(0);
-  const [score, setScore] = useState(0); // Initialize score to 0
 
   useEffect(() => {
     const fetchPeople = async () => {
@@ -27,54 +26,45 @@ const AddPic = () => {
     fetchPeople();
   }, []);
 
-  const calculateScore = () => {
-    return marryCount * 3 + fuckCount * 1 - killCount * 5;
-  };
-
-  useEffect(() => {
-    // Update score whenever killCount, marryCount, or fuckCount changes
-    const newScore = marryCount * 3 + fuckCount * 1 - killCount * 5;
-    setScore(newScore);
-  }, [killCount, marryCount, fuckCount]);
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (image) {
-      const formData = new FormData();
-      formData.append('image', image);
-      formData.append('person', selectedPerson);
-      formData.append('kill', killCount);
-      formData.append('marry', marryCount);
-      formData.append('fuck', fuckCount);
-      formData.append('score', score); // Append score to the form data
+    if (images.length > 0) {
+      for (const image of images) {
+        const formData = new FormData();
+        formData.append('image', image);
+        formData.append('person', selectedPerson);
+        formData.append('kill', killCount);
+        formData.append('marry', marryCount);
+        formData.append('fuck', fuckCount);
 
-      try {
-        const response = await fetch('/api/upload', {
-          method: 'POST',
-          body: formData,
-        });
+        try {
+          const response = await fetch('/api/upload', {
+            method: 'POST',
+            body: formData,
+          });
 
-       // Inside your handleSubmit function after the fetch call
-if (response.ok) {
-  console.log("Image uploaded successfully");
-  // Refresh the page to show new images or update state
-  window.location.reload(); // This refreshes the page
-} else {
-  console.error("Upload failed");
-}
-
-      } catch (error) {
-        console.error("Error during upload: ", error);
+          if (response.ok) {
+            console.log("Image uploaded successfully");
+          } else {
+            console.error("Upload failed for an image");
+          }
+        } catch (error) {
+          console.error("Error during upload: ", error);
+        }
       }
+      // Clear the images and counts after upload
+      setImages([]);
+      setKillCount(0);
+      setMarryCount(0);
+      setFuckCount(0);
     } else {
       console.error("No image selected");
     }
   };
 
-
   const handleImageChange = (event) => {
-    setImage(event.target.files[0]);
+    setImages(Array.from(event.target.files));
   };
 
   const handlePersonChange = (event) => {
@@ -95,9 +85,14 @@ if (response.ok) {
           </option>
         ))}
       </select>
-      <input type="file" onChange={handleImageChange} className="block w-full text-sm text-gray-500"/>
+      <input 
+        type="file" 
+        onChange={handleImageChange} 
+        multiple 
+        className="block w-full text-sm text-gray-500"
+      />
       <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-        Upload Image
+        Upload Image(s)
       </button>
     </form>
   );
