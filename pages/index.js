@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../components/navBar'; 
+import PicModal from '../components/PicModal';
+
 
 const IndexPage = () => {
   const [images, setImages] = useState([]);
   const [selections, setSelections] = useState({ kill: null, marry: null, fuck: null });
+  const [modalShow, setModalShow] = useState(false);
+const [currentImageUrl, setCurrentImageUrl] = useState('');
+
 
   useEffect(() => {
     fetchImages();
@@ -67,6 +72,17 @@ const IndexPage = () => {
     return selections.kill && selections.marry && selections.fuck;
   };
 
+  const openModal = (imageUrl) => {
+    setCurrentImageUrl(imageUrl);
+    setModalShow(true);
+  };
+  
+  const closeModal = () => {
+    setModalShow(false);
+    setCurrentImageUrl('');
+  };
+  
+
   const handleSubmit = async () => {
     const uniqueSelections = new Set(Object.values(selections));
     if (uniqueSelections.size === 3) {
@@ -94,14 +110,19 @@ const IndexPage = () => {
 
   return (
     <>
-    <Navbar />
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold text-center mb-8">Images</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {images.map((image, index) => (
-          <div key={index} className="max-w-sm rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out">
-            <img className="w-full object-cover h-60" src={image.url} alt="Image" />
-            <div className="flex justify-center space-x-3 mt-4 mb-6">
+      <Navbar />
+      <div className="container mx-auto p-4">
+        <h1 className="text-2xl font-bold text-center mb-8">Images</h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {images.map((image, index) => (
+            <div key={index} className="max-w-sm rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out">
+              <img 
+                className="w-full object-cover h-60 cursor-pointer" 
+                src={image.url} 
+                alt="Image" 
+                onClick={() => openModal(image.url)} 
+              />
+              <div className="flex justify-center space-x-3 mt-4 mb-6">
               <button 
                 onClick={() => handleSelection('kill', image._id)}
                 className={`${
@@ -137,15 +158,19 @@ const IndexPage = () => {
         ))}
       </div>
       {isSubmitVisible() && (
-        <div className="text-center mt-8">
-          <button onClick={handleSubmit} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full">
-            Submit
-          </button>
-        </div>
-      )}
-    </div>
-  </>
-  
+          <div className="text-center mt-8">
+            <button onClick={handleSubmit} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full">
+              Submit
+            </button>
+          </div>
+        )}
+      </div>
+      <PicModal
+        show={modalShow}
+        onClose={closeModal}
+        imageUrl={currentImageUrl}
+      />
+    </>
   );
 };
 
