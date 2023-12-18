@@ -93,58 +93,59 @@ const IndexPage = () => {
   };
 
   return (
-    <> 
+    <>
     <Navbar />
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold text-center mb-8">Images</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {images.map((image, index) => (
-          <div key={index} className="max-w-sm rounded overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 ease-in-out">
-          <img className="w-full" src={image.url} alt={image.personName || 'Image'} />
-            <div className="px-6 py-4">
-              <p className="text-gray-700 text-base mb-4">{image.personName || 'Name Unknown'}</p>
-  <button 
-    onClick={() => handleSelection('kill', image._id)}
-    className={`${
-      selections.kill === image._id
-        ? "bg-red-500 text-white"
-        : "bg-gray-300 text-gray-700"
-    } mr-2 mb-2 px-4 py-2 rounded`}
-  >
-    Kill
-  </button>
-  <button 
-    onClick={() => handleSelection('marry', image._id)}
-    className={`${
-      selections.marry === image._id
-        ? "bg-green-500 text-white"
-        : "bg-gray-300 text-gray-700"
-    } mr-2 mb-2 px-4 py-2 rounded`}
-  >
-    Marry
-  </button>
-  <button 
-    onClick={() => handleSelection('fuck', image._id)}
-    className={`${
-      selections.fuck === image._id
-        ? "bg-blue-500 text-white"
-        : "bg-gray-300 text-gray-700"
-    } mr-2 mb-2 px-4 py-2 rounded`}
-  >
-    Fuck
-  </button>
-</div>
-
+          <div key={index} className="max-w-sm rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out">
+            <img className="w-full object-cover h-60" src={image.url} alt="Image" />
+            <div className="flex justify-center space-x-3 mt-4 mb-6">
+              <button 
+                onClick={() => handleSelection('kill', image._id)}
+                className={`${
+                  selections.kill === image._id
+                    ? "bg-red-500 hover:bg-red-700"
+                    : "bg-gray-300 hover:bg-gray-400"
+                } text-white font-bold py-2 px-4 rounded-full`}
+              >
+                Kill
+              </button>
+              <button 
+                onClick={() => handleSelection('marry', image._id)}
+                className={`${
+                  selections.marry === image._id
+                    ? "bg-green-500 hover:bg-green-700"
+                    : "bg-gray-300 hover:bg-gray-400"
+                } text-white font-bold py-2 px-4 rounded-full`}
+              >
+                Marry
+              </button>
+              <button 
+                onClick={() => handleSelection('fuck', image._id)}
+                className={`${
+                  selections.fuck === image._id
+                    ? "bg-blue-500 hover:bg-blue-700"
+                    : "bg-gray-300 hover:bg-gray-400"
+                } text-white font-bold py-2 px-4 rounded-full`}
+              >
+                Fuck
+              </button>
+            </div>
           </div>
         ))}
       </div>
       {isSubmitVisible() && (
-        <button onClick={handleSubmit} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-          Submit
-        </button>
+        <div className="text-center mt-8">
+          <button onClick={handleSubmit} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full">
+            Submit
+          </button>
+        </div>
       )}
     </div>
-    </>
+  </>
+  
   );
 };
 
