@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../components/navBar'; 
-import PicModal from '../components/PicModal';
+import PicModal from '../components/picModal';
 
 
 const IndexPage = () => {
