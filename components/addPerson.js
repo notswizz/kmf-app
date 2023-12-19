@@ -3,10 +3,6 @@ import React, { useState } from 'react';
 const AddPerson = () => {
   const [person, setPerson] = useState({
     name: '',
-    age: '',
-    boobs: 0, // Assuming this is a numeric value
-    booty: 0, // Assuming this is a numeric value
-    hairColor: ''
   });
 
   const handleChange = (e) => {

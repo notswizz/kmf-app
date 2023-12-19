@@ -1,4 +1,3 @@
-// pages/api/register.js
 import { MongoClient } from 'mongodb';
 
 async function handler(req, res) {

@@ -1,4 +1,3 @@
-// pages/api/login.js
 import { MongoClient } from 'mongodb';
 
 async function handler(req, res) {
@@ -13,16 +12,13 @@ async function handler(req, res) {
       return res.status(401).json({ message: 'User not found!' });
     }
 
-    // Directly compare the plain text passwords
     if (password !== user.password) {
       client.close();
       return res.status(403).json({ message: 'Invalid password!' });
     }
 
-    // Implement token-based session or similar strategy here
-
     client.close();
-    res.status(200).json({ message: 'Logged in!' });
+    res.status(200).json({ message: 'Logged in!', user: { username } }); // Return user data
   }
 }
 
