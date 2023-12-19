@@ -18,7 +18,8 @@ async function handler(req, res) {
     }
 
     client.close();
-    res.status(200).json({ message: 'Logged in!', user: { username } }); // Return user data
+res.status(200).json({ message: 'Logged in!', user: { username, _id: user._id } }); // Include user _id
+
   }
 }
 

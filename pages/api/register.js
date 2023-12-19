@@ -21,9 +21,10 @@ async function handler(req, res) {
   // Create new user with plain text password (not recommended for production)
   const result = await db.collection('users').insertOne({
     username,
-    password // Stored in plain text
+    password, // Consider hashing this password
+    points: 0 // Initialize points to 0
   });
-
+  
   client.close();
   res.status(201).json({ message: 'User created' });
 }

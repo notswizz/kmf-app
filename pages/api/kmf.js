@@ -25,10 +25,14 @@ export default async function handler(req, res) {
             // Fetch the updated document
             const updatedDoc = await collection.findOne({ "_id": new ObjectId(id) });
 
-            // Recalculate score
-            const newScore = (updatedDoc.marry || 0) * 3 + 
-                             (updatedDoc.fuck || 0) * 1 - 
-                             (updatedDoc.kill || 0) * 5;
+            // Calculate the total number of ratings
+            const totalRatings = (updatedDoc.marry || 0) + (updatedDoc.fuck || 0) + (updatedDoc.kill || 0);
+
+            let newScore = 0;
+            if (totalRatings > 0) {
+              // Recalculate score divided by total ratings
+              newScore = ((updatedDoc.marry || 0) * 3 + (updatedDoc.fuck || 0) * 1 - (updatedDoc.kill || 0) * 5) / totalRatings;
+            }
 
             // Update the score in the document
             await collection.updateOne(
@@ -36,19 +40,21 @@ export default async function handler(req, res) {
               { $set: { score: newScore } }
             );
 
-            console.log(`Update result for ${category}:`, updateResult);
+            // Log the new score of each picture
+            console.log(`New score for picture with id ${id}:`, newScore);
+
           } catch (updateError) {
             console.error(`Error updating ${category} for id ${id}:`, updateError);
           }
         }
       }
 
-      res.status(200).json({ message: 'Counts and score updated successfully' });
+      res.status(200).json({ message: 'Ratings updated successfully' });
     } catch (error) {
-      console.error('Failed to update counts and score:', error);
-      res.status(500).json({ error: 'Failed to update counts and score' });
+      console.error('Error handling the request:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
     }
   } else {
-    res.status(405).end('Method Not Allowed');
+    res.status(405).json({ message: 'Method Not Allowed' });
   }
 }

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
 import Navbar from '../components/navBar'; 
 import PicModal from '../components/picModal';
 
@@ -87,16 +88,35 @@ const [currentImageUrl, setCurrentImageUrl] = useState('');
     const uniqueSelections = new Set(Object.values(selections));
     if (uniqueSelections.size === 3) {
       try {
-        const response = await fetch('/api/kmf', {
+        const submitResponse = await fetch('/api/kmf', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(selections),
         });
-
-        if (response.ok) {
+  
+        if (submitResponse.ok) {
           console.log('Submitted successfully');
           setSelections({ kill: null, marry: null, fuck: null });
           fetchImages();
+  
+          // Retrieve user info from cookie
+          const userCookie = Cookies.get('user');
+          if (userCookie) {
+            const user = JSON.parse(userCookie);
+  
+            // Add a point to the user's score
+            const pointsResponse = await fetch('/api/addPoint', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ userId: user._id }) // Send user ID to the server
+            });
+  
+            if (!pointsResponse.ok) {
+              console.error('Failed to update points');
+            }
+          } else {
+            console.error('User information not found in cookie');
+          }
         } else {
           console.error('Submission failed');
         }
@@ -123,43 +143,31 @@ const [currentImageUrl, setCurrentImageUrl] = useState('');
                 onClick={() => openModal(image.url)} 
               />
               <div className="flex justify-center space-x-3 mt-4 mb-6">
-              <button 
-                onClick={() => handleSelection('kill', image._id)}
-                className={`${
-                  selections.kill === image._id
-                    ? "bg-red-500 hover:bg-red-700"
-                    : "bg-gray-300 hover:bg-gray-400"
-                } text-white font-bold py-2 px-4 rounded-full`}
-              >
-                Kill
-              </button>
-              <button 
-                onClick={() => handleSelection('marry', image._id)}
-                className={`${
-                  selections.marry === image._id
-                    ? "bg-green-500 hover:bg-green-700"
-                    : "bg-gray-300 hover:bg-gray-400"
-                } text-white font-bold py-2 px-4 rounded-full`}
-              >
-                Marry
-              </button>
-              <button 
-                onClick={() => handleSelection('fuck', image._id)}
-                className={`${
-                  selections.fuck === image._id
-                    ? "bg-blue-500 hover:bg-blue-700"
-                    : "bg-gray-300 hover:bg-gray-400"
-                } text-white font-bold py-2 px-4 rounded-full`}
-              >
-                Fuck
-              </button>
+                <button 
+                  onClick={() => handleSelection('kill', image._id)}
+                  className={`${selections.kill === image._id ? "bg-red-500 hover:bg-red-700" : "bg-gray-300 hover:bg-gray-400"} text-white font-bold py-1 px-2 sm:py-2 sm:px-4 rounded-full text-xs sm:text-base`}
+                >
+                  Kill
+                </button>
+                <button 
+                  onClick={() => handleSelection('marry', image._id)}
+                  className={`${selections.marry === image._id ? "bg-green-500 hover:bg-green-700" : "bg-gray-300 hover:bg-gray-400"} text-white font-bold py-1 px-2 sm:py-2 sm:px-4 rounded-full text-xs sm:text-base`}
+                >
+                  Marry
+                </button>
+                <button 
+                  onClick={() => handleSelection('fuck', image._id)}
+                  className={`${selections.fuck === image._id ? "bg-blue-500 hover:bg-blue-700" : "bg-gray-300 hover:bg-gray-400"} text-white font-bold py-1 px-2 sm:py-2 sm:px-4 rounded-full text-xs sm:text-base`}
+                >
+                  Fuck
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
-      {isSubmitVisible() && (
+          ))}
+        </div>
+        {isSubmitVisible() && (
           <div className="text-center mt-8">
-            <button onClick={handleSubmit} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full">
+            <button onClick={handleSubmit} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 sm:px-6 rounded-full">
               Submit
             </button>
           </div>

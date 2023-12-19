@@ -21,7 +21,7 @@ const Login = () => {
     const data = await response.json();
     
     if (response.ok) {
-      Cookies.set('user', JSON.stringify(data.user), { expires: 1 }); // Store user in cookie
+      Cookies.set('user', JSON.stringify(data.user), { expires: 1 }); // data.user should contain _id now
       router.push('/kmf'); // Redirect to kmf.js page
     } else {
       alert('Login failed: ' + data.message);
