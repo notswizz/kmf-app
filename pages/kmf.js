@@ -130,9 +130,9 @@ const [currentImageUrl, setCurrentImageUrl] = useState('');
 
   return (
     <>
-      <Navbar />
+     
       <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold text-center mb-8">Images</h1>
+        <h1 className="text-2xl font-bold text-center mb-8">KMF</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {images.map((image, index) => (
             <div key={index} className="max-w-sm rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out">
