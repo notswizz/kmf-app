@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
-import Navbar from '../components/navBar'; 
 import PicModal from '../components/picModal';
 
 

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
-import NavBar from '../components/navBar'; // Adjust the path as necessary
 import Login from '../components/loginForm'; // Adjust the path as necessary
 import Register from '../components/registerForm'; // Adjust the path as necessary
 
@@ -9,7 +8,7 @@ const IndexPage = () => {
 
   return (
     <>
-      <NavBar />
+   
       <div className="container mx-auto p-4">
         <h1 className="text-4xl font-bold text-center mb-8">KMF</h1>
         <div className="text-lg space-y-4">
