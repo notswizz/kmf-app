@@ -8,6 +8,7 @@ const KMFPage = () => {
   const [selections, setSelections] = useState({ kill: null, marry: null, fuck: null });
   const [modalShow, setModalShow] = useState(false);
 const [currentImageUrl, setCurrentImageUrl] = useState('');
+const [currentGradient, setCurrentGradient] = useState(0);
 
 
   useEffect(() => {
@@ -82,6 +83,12 @@ const [currentImageUrl, setCurrentImageUrl] = useState('');
     setCurrentImageUrl('');
   };
   
+  const gradients = [
+    'bg-gradient-to-r from-blue-500 to-green-500',
+    'bg-gradient-to-r from-purple-500 to-pink-500',
+    'bg-gradient-to-r from-orange-500 to-yellow-500',
+    // Add more gradients as needed
+  ];
 
   const handleSubmit = async () => {
     const uniqueSelections = new Set(Object.values(selections));
@@ -109,6 +116,8 @@ const [currentImageUrl, setCurrentImageUrl] = useState('');
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ userId: user._id }) // Send user ID to the server
             });
+
+            setCurrentGradient((currentGradient + 1) % gradients.length);
   
             if (!pointsResponse.ok) {
               console.error('Failed to update points');
@@ -127,36 +136,37 @@ const [currentImageUrl, setCurrentImageUrl] = useState('');
     }
   };
 
+
+
   return (
     <>
-     
-      <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold text-center mb-8">KMF</h1>
+     <div className={`container mx-auto p-4 ${gradients[currentGradient]}`}>
+        <h1 className="text-4xl font-bold text-center mb-8 text-white">KMF</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {images.map((image, index) => (
-            <div key={index} className="max-w-sm rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out">
-              <img 
-                className="w-full object-cover h-60 cursor-pointer" 
-                src={image.url} 
-                alt="Image" 
-                onClick={() => openModal(image.url)} 
+            <div key={index} className="max-w-sm rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out bg-white">
+              <img
+                className="w-full object-cover h-60 cursor-pointer"
+                src={image.url}
+                alt="Image"
+                onClick={() => openModal(image.url)}
               />
               <div className="flex justify-center space-x-3 mt-4 mb-6">
-                <button 
+                <button
                   onClick={() => handleSelection('kill', image._id)}
-                  className={`${selections.kill === image._id ? "bg-red-500 hover:bg-red-700" : "bg-gray-300 hover:bg-gray-400"} text-white font-bold py-1 px-2 sm:py-2 sm:px-4 rounded-full text-xs sm:text-base`}
+                  className={`${selections.kill === image._id ? "bg-red-600 hover:bg-red-800" : "bg-gray-400 hover:bg-gray-500"} text-white font-bold py-2 px-4 rounded-full text-base`}
                 >
                   Kill
                 </button>
-                <button 
+                <button
                   onClick={() => handleSelection('marry', image._id)}
-                  className={`${selections.marry === image._id ? "bg-green-500 hover:bg-green-700" : "bg-gray-300 hover:bg-gray-400"} text-white font-bold py-1 px-2 sm:py-2 sm:px-4 rounded-full text-xs sm:text-base`}
+                  className={`${selections.marry === image._id ? "bg-green-600 hover:bg-green-800" : "bg-gray-400 hover:bg-gray-500"} text-white font-bold py-2 px-4 rounded-full text-base`}
                 >
                   Marry
                 </button>
-                <button 
+                <button
                   onClick={() => handleSelection('fuck', image._id)}
-                  className={`${selections.fuck === image._id ? "bg-blue-500 hover:bg-blue-700" : "bg-gray-300 hover:bg-gray-400"} text-white font-bold py-1 px-2 sm:py-2 sm:px-4 rounded-full text-xs sm:text-base`}
+                  className={`${selections.fuck === image._id ? "bg-blue-600 hover:bg-blue-800" : "bg-gray-400 hover:bg-gray-500"} text-white font-bold py-2 px-4 rounded-full text-base`}
                 >
                   Fuck
                 </button>
@@ -166,7 +176,7 @@ const [currentImageUrl, setCurrentImageUrl] = useState('');
         </div>
         {isSubmitVisible() && (
           <div className="text-center mt-8">
-            <button onClick={handleSubmit} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 sm:px-6 rounded-full">
+            <button onClick={handleSubmit} className="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-6 rounded-full">
               Submit
             </button>
           </div>
@@ -179,6 +189,7 @@ const [currentImageUrl, setCurrentImageUrl] = useState('');
       />
     </>
   );
+  
 };
 
 export default KMFPage;
