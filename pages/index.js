@@ -43,6 +43,20 @@ const IndexPage = () => {
             Decide who you'd Kill, Marry, or ... - it's all about preferences, and there are no wrong answers.
           </p>
         </div>
+        <div className="mt-8">
+    
+    <div className="grid grid-cols-3 gap-4">
+      {randomImages.map((image) => (
+        <div key={image._id} className="border rounded-md overflow-hidden">
+          <img
+            src={image.url}
+            alt={`Random Image`}
+            className="w-full h-auto"
+          />
+        </div>
+      ))}
+    </div>
+  </div>
 
         <button
           onClick={() => setShowLogin(!showLogin)}
@@ -53,20 +67,7 @@ const IndexPage = () => {
 
         {showLogin ? <Login /> : <Register />}
 
-        <div className="mt-8">
-    
-          <div className="grid grid-cols-3 gap-4">
-            {randomImages.map((image) => (
-              <div key={image._id} className="border rounded-md overflow-hidden">
-                <img
-                  src={image.url}
-                  alt={`Random Image`}
-                  className="w-full h-auto"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
+       
       </div>
     </div>
   );
