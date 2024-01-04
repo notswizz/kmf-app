@@ -2,6 +2,16 @@ import React, { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import PicModal from '../components/picModal';
 
+async function fetchAverageScores() {
+  const response = await fetch('/api/averageScores');
+  if (response.ok) {
+    const averages = await response.json();
+    // Process and display averages
+  } else {
+    console.error('Failed to fetch average scores');
+  }
+}
+
 
 const KMFPage = () => {
   const [images, setImages] = useState([]);
