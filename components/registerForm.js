@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { useRouter } from 'next/router'; // Import useRouter from Next.js
 
 const Register = () => {
   const [registerInfo, setRegisterInfo] = useState({ username: '', password: '' });
+  const router = useRouter(); // Initialize the router
 
   const handleRegisterChange = (e) => {
     setRegisterInfo({ ...registerInfo, [e.target.name]: e.target.value });
@@ -18,6 +20,9 @@ const Register = () => {
     const data = await response.json();
     if (response.ok) {
       alert('Registration successful');
+      Cookies.set('user', JSON.stringify(data.user), { expires: 1 }); // data.user should contain _id now
+      // Redirect to the kmf.js page after successful registration
+      router.push('/kmf');
     } else {
       alert('Registration failed: ' + data.message);
     }
