@@ -1,24 +1,43 @@
-// components/Navbar.js
-import React from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
+import React, { useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
 
-const Navbar = () => {
+const NavBar = () => {
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const userCookie = Cookies.get('user');
+      if (userCookie) {
+        const user = JSON.parse(userCookie);
+        try {
+          const response = await fetch(`/api/getUser?username=${user.username}`);
+          if (response.ok) {
+            const userData = await response.json();
+            setUserData(userData);
+          }
+        } catch (error) {
+          console.error('Failed to fetch user data:', error);
+        }
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
   return (
-    <header className="bg-black text-white py-1 shadow-md">
-      <nav className="container mx-auto flex justify-between items-center px-4 sm:px-6 lg:px-8">
-       
-        <ul className="flex space-x-4">
-          <li className="hover:text-gray-400">
-            <Link href="/admin">Admin</Link>
-          </li>
-          <li className="hover:text-gray-400">
-            <Link href="/account">Account</Link>
-          </li>
-        </ul>
-      </nav>
-    </header>
+    <nav className="bg-gray-800 text-white p-4">
+      <div className="container mx-auto flex justify-between items-center">
+        <div className="text-lg font-bold">KMF Game</div>
+        {userData && (
+          <div className="flex items-center space-x-4">
+               <span>{userData.points} points</span>
+            <span>{userData.username}</span>
+         
+          </div>
+        )}
+      </div>
+    </nav>
   );
 };
 
-export default Navbar;
+export default NavBar;
