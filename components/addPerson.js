@@ -59,7 +59,7 @@ const AddPerson = () => {
         <label className="block text-gray-700 text-sm font-bold mb-2">Instagram</label>
         <input
           type="text"
-          name="name"
+          name="instagram"
           value={person.instagram}
           onChange={handleChange}
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight"
