@@ -3,9 +3,7 @@ import React, { useState } from 'react';
 const AddPerson = () => {
   const [person, setPerson] = useState({
     name: '',
-    age:'',
-    boobs:'',
-    booty:'',
+    instagram: '',
   });
 
   const [submissionStatus, setSubmissionStatus] = useState('');
@@ -56,41 +54,19 @@ const AddPerson = () => {
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight"
         />
       </div>
+     
       <div>
-        <label className="block text-gray-700 text-sm font-bold mb-2">Age</label>
+        <label className="block text-gray-700 text-sm font-bold mb-2">Instagram</label>
         <input
-          type="number"
-          name="age"
-          value={person.age}
+          type="text"
+          name="name"
+          value={person.instagram}
           onChange={handleChange}
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight"
         />
       </div>
-      <div>
-        <label className="block text-gray-700 text-sm font-bold mb-2">Boobs (0-4)</label>
-        <input
-          type="number"
-          name="boobs"
-          value={person.boobs}
-          onChange={handleChange}
-          min="0"
-          max="4"
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight"
-        />
-      </div>
-      <div>
-        <label className="block text-gray-700 text-sm font-bold mb-2">Booty (0-4)</label>
-        <input
-          type="number"
-          name="booty"
-          value={person.booty}
-          onChange={handleChange}
-          min="0"
-          max="4"
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight"
-        />
-        
-      </div>
+    
+     
      
 
       <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
