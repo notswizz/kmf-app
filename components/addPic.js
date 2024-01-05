@@ -7,6 +7,7 @@ const AddPic = () => {
   const [killCount, setKillCount] = useState(0);
   const [marryCount, setMarryCount] = useState(0);
   const [fuckCount, setFuckCount] = useState(0);
+  const [submissionStatus, setSubmissionStatus] = useState('');
 
   useEffect(() => {
     const fetchPeople = async () => {
@@ -28,8 +29,11 @@ const AddPic = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setSubmissionStatus(''); // Reset submission status on new submit
 
     if (images.length > 0) {
+      let uploadSuccessful = true;
+
       for (const image of images) {
         const formData = new FormData();
         formData.append('image', image);
@@ -44,22 +48,32 @@ const AddPic = () => {
             body: formData,
           });
 
-          if (response.ok) {
-            console.log("Image uploaded successfully");
-          } else {
+          if (!response.ok) {
             console.error("Upload failed for an image");
+            uploadSuccessful = false;
+            break; // Stop the loop if any upload fails
           }
         } catch (error) {
           console.error("Error during upload: ", error);
+          uploadSuccessful = false;
+          break; // Stop the loop on error
         }
       }
-      // Clear the images and counts after upload
-      setImages([]);
-      setKillCount(0);
-      setMarryCount(0);
-      setFuckCount(0);
+
+      if (uploadSuccessful) {
+        console.log("All images uploaded successfully");
+        setSubmissionStatus("All images uploaded successfully");
+        // Clear the images and counts after successful upload
+        setImages([]);
+        setKillCount(0);
+        setMarryCount(0);
+        setFuckCount(0);
+      } else {
+        setSubmissionStatus("Failed to upload some or all images");
+      }
     } else {
       console.error("No image selected");
+      setSubmissionStatus("No image selected");
     }
   };
 
@@ -94,6 +108,11 @@ const AddPic = () => {
       <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
         Upload Image(s)
       </button>
+      {submissionStatus && (
+        <div className="mt-3 text-center">
+          {submissionStatus}
+        </div>
+      )}
     </form>
   );
 };
