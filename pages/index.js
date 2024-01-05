@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Login from '../components/loginForm'; // Adjust the path as necessary
 import Register from '../components/registerForm'; // Adjust the path as necessary
-import kmfLogo from '../public/KMF.png'; // Adjust the path to your public folder
+
 
 const IndexPage = () => {
   const [showLogin, setShowLogin] = useState(true);
@@ -65,6 +65,8 @@ const IndexPage = () => {
               </div>
             ))}
           </div>
+          
+
         </div>
   
 
@@ -77,7 +79,12 @@ const IndexPage = () => {
         >
           {showLogin ? 'Register' : 'Login'}
         </button>
-        
+<br></br>
+<Link href="/info" legacyBehavior>
+            <a className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out focus:outline-none focus:shadow-outline">
+              Info
+            </a>
+          </Link>
         
         <div className="mt-8">
           <div className="grid grid-cols-3 gap-4">
