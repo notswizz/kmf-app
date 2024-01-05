@@ -22,6 +22,7 @@ const [currentImageUrl, setCurrentImageUrl] = useState('');
 const [currentGradient, setCurrentGradient] = useState(0);
 
 
+
   useEffect(() => {
     fetchImages();
   }, []);
@@ -101,25 +102,38 @@ const [currentGradient, setCurrentGradient] = useState(0);
     // Add more gradients as needed
   ];
 
+  
   const handleSubmit = async () => {
     const uniqueSelections = new Set(Object.values(selections));
     if (uniqueSelections.size === 3) {
       try {
-        const submitResponse = await fetch('/api/kmf', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(selections),
-        });
+        const userCookie = Cookies.get('user');
+        if (userCookie) {
+          const user = JSON.parse(userCookie);
   
-        if (submitResponse.ok) {
-          console.log('Submitted successfully');
-          setSelections({ kill: null, marry: null, fuck: null });
-          fetchImages();
+          // Submitting the selections
+          const submitResponse = await fetch('/api/kmfApi', { // Adjust the endpoint as needed
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              userId: user._id, // Send user ID to the server
+              selections: selections
+            }),
+          });
   
-          // Retrieve user info from cookie
-          const userCookie = Cookies.get('user');
-          if (userCookie) {
-            const user = JSON.parse(userCookie);
+          if (submitResponse.ok) {
+            const responseData = await submitResponse.json();
+            console.log('Submitted successfully');
+  
+            // Log the new scores for each image
+            if (responseData.newScores) {
+              for (const [imageId, newScore] of Object.entries(responseData.newScores)) {
+                console.log(`New score for image ${imageId}: ${newScore}`);
+              }
+            }
+  
+            setSelections({ kill: null, marry: null, fuck: null });
+            fetchImages();
   
             // Add a point to the user's score
             const pointsResponse = await fetch('/api/addPoint', {
@@ -127,17 +141,21 @@ const [currentGradient, setCurrentGradient] = useState(0);
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ userId: user._id }) // Send user ID to the server
             });
-
-            setCurrentGradient((currentGradient + 1) % gradients.length);
   
-            if (!pointsResponse.ok) {
+            if (pointsResponse.ok) {
+              console.log('Points updated successfully');
+            } else {
               console.error('Failed to update points');
             }
           } else {
-            console.error('User information not found in cookie');
+            console.error('Submission failed');
           }
+  
+          // Update the gradient for UI effect
+          setCurrentGradient((currentGradient + 1) % gradients.length);
+  
         } else {
-          console.error('Submission failed');
+          console.error('User information not found in cookie');
         }
       } catch (error) {
         console.error('Error during submission:', error);
@@ -146,6 +164,7 @@ const [currentGradient, setCurrentGradient] = useState(0);
       console.error('Please make a unique selection for each category');
     }
   };
+  
 
 
 
