@@ -99,7 +99,7 @@ return (
         <div style={fixedButtonStyle}>
   <Link href="/info" legacyBehavior>
     <a title="Info" style={{ textDecoration: 'none', color: 'inherit' }}>
-      ℹ️ {/* Emoji or icon for info */}
+      ℹ {/* Emoji or icon for info */}
     </a>
   </Link>
 </div>
