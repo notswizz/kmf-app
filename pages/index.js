@@ -36,7 +36,7 @@ const IndexPage = () => {
   const fixedButtonStyle = {
     position: 'fixed',
     bottom: '20px',
-    right: '1px',
+    right: '10px',
     backgroundColor: 'rgba(0, 0, 0, 0.7)', // Semi-transparent black
     color: 'white',
     border: '2px solid #FFFFFF', // White border
@@ -53,13 +53,7 @@ const IndexPage = () => {
   return (
     <div className="min-h-screen flex flex-col justify-center items-center" style={{ backgroundColor: '#1D1D1D' }}>
       <div className="container mx-auto p-4" style={{ backgroundColor: 'black', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
-      <div style={fixedButtonStyle}>
-  <Link href="/info" legacyBehavior>
-    <a title="Info" style={{ textDecoration: 'none', color: 'inherit' }}>
-      ℹ️ {/* Emoji or icon for info */}
-    </a>
-  </Link>
-</div>
+      
         <div className="flex justify-between items-center my-4">
           {randomImages.length > 0 && (
             <img
@@ -86,7 +80,13 @@ const IndexPage = () => {
         >
           {showLogin ? 'Register' : 'Login'}
         </button>
-
+        <div style={fixedButtonStyle}>
+  <Link href="/info" legacyBehavior>
+    <a title="Info" style={{ textDecoration: 'none', color: 'inherit' }}>
+      ℹ️ {/* Emoji or icon for info */}
+    </a>
+  </Link>
+</div>
         <div className="grid grid-cols-3 gap-4 mt-8">
           {moreRandomImages.map((image) => (
             <div key={image._id} className="border rounded-md overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
