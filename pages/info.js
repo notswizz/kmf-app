@@ -20,8 +20,8 @@ const InfoPage = () => {
 
    // Fetch Total Images
    const fetchTotalImages = async () => {
-    // Note: Replace 'http://localhost:3000' with your production domain when deploying
-    const response = await fetch('http://localhost:3000/api/download');
+
+    const response = await fetch('/api/download');
     if (response.ok) {
       const data = await response.json();
       setTotalImages(data.images.length);
@@ -32,7 +32,7 @@ const InfoPage = () => {
   };
 
   const fetchTotalPoints = async () => {
-    const response = await fetch('http://localhost:3000/api/getTotalPoints');
+    const response = await fetch('/api/getTotalPoints');
     if (response.ok) {
       const data = await response.json();
       setTotalPoints(data.totalPoints);
