@@ -1,43 +1,45 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 
-const NavBar = () => {
-  const [userData, setUserData] = useState(null);
+const Navbar = () => {
+  const [userPoints, setUserPoints] = useState(0);
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      const userCookie = Cookies.get('user');
-      if (userCookie) {
-        const user = JSON.parse(userCookie);
-        try {
-          const response = await fetch(`/api/getUser?username=${user.username}`);
-          if (response.ok) {
-            const userData = await response.json();
-            setUserData(userData);
-          }
-        } catch (error) {
-          console.error('Failed to fetch user data:', error);
-        }
-      }
-    };
+    // Retrieve user data from cookies
+    const userData = Cookies.get('user');
+    if (userData) {
+      const user = JSON.parse(userData);
 
-    fetchUserData();
+      // Fetch user points from the getUser.js API
+      fetch('../api/getUser', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${user.token}`, // Include the user's token
+        },
+      })
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error('Failed to fetch user points');
+          }
+        })
+        .then((data) => {
+          setUserPoints(data.points);
+        })
+        .catch((error) => {
+          console.error('Error fetching user points:', error);
+        });
+    }
   }, []);
 
   return (
-    <nav className="bg-gray-800 text-white p-4">
-      <div className="container mx-auto flex justify-between items-center">
-        <div className="text-lg font-bold">KMF Game</div>
-        {userData && (
-          <div className="flex items-center space-x-4">
-               <span>{userData.points} points</span>
-            <span>{userData.username}</span>
-         
-          </div>
-        )}
-      </div>
-    </nav>
+    <header className="bg-black text-white py-1 shadow-md">
+      <nav className="container mx-auto flex justify-between items-center px-4 sm:px-6 lg:px-8">
+        <p className="text-gray-400">Points: {userPoints}</p>
+      </nav>
+    </header>
   );
 };
 
-export default NavBar;
+export default Navbar;

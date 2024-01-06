@@ -36,7 +36,7 @@ const IndexPage = () => {
   const fixedButtonStyle = {
     position: 'fixed',
     bottom: '20px',
-    right: '20px',
+    right: '1px',
     backgroundColor: 'rgba(0, 0, 0, 0.7)', // Semi-transparent black
     color: 'white',
     border: '2px solid #FFFFFF', // White border
@@ -99,11 +99,7 @@ const IndexPage = () => {
           ))}
         </div>
 
-        <Link href="/info" legacyBehavior>
-          <a className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out focus:outline-none focus:shadow-outline">
-            Info
-          </a>
-        </Link>
+
       </div>
     </div>
   );
