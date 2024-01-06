@@ -63,12 +63,7 @@ const IndexPage = () => {
             ))}
           </div>
       <img src="/KMF.png" alt="KMF Logo" className="mx-auto" style={{ maxHeight: '150px' }} />
-      <button
-          onClick={() => setShowLogin(!showLogin)}
-          className="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded my-4 transition duration-300 ease-in-out focus:outline-none focus:shadow-outline"
-        >
-          {showLogin ? 'Register' : 'Login'}
-        </button>
+     
         <div className="mt-8">
          
           
@@ -80,7 +75,12 @@ const IndexPage = () => {
         {showLogin ? <Login /> : <Register />}
 
       
-
+        <button
+          onClick={() => setShowLogin(!showLogin)}
+          className="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded my-4 transition duration-300 ease-in-out focus:outline-none focus:shadow-outline"
+        >
+          {showLogin ? 'Register' : 'Login'}
+        </button>
 
         
         <div className="mt-8">
