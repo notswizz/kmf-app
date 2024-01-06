@@ -51,10 +51,7 @@ const IndexPage = () => {
   return (
     <div className="min-h-screen flex flex-col justify-center items-center" style={{ backgroundColor: '#1D1D1D' }}>
       <div className="container mx-auto p-4" style={{ backgroundColor: 'black', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
-      <img src="/KMF.png" alt="KMF Logo" className="mx-auto" style={{ maxHeight: '150px' }} />
-       
-        <div className="mt-8">
-          <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-3 gap-4">
             {randomImages.map((image) => (
               <div key={image._id} className="border rounded-md overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
                 <img
@@ -65,6 +62,15 @@ const IndexPage = () => {
               </div>
             ))}
           </div>
+      <img src="/KMF.png" alt="KMF Logo" className="mx-auto" style={{ maxHeight: '150px' }} />
+      <button
+          onClick={() => setShowLogin(!showLogin)}
+          className="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded my-4 transition duration-300 ease-in-out focus:outline-none focus:shadow-outline"
+        >
+          {showLogin ? 'Register' : 'Login'}
+        </button>
+        <div className="mt-8">
+         
           
 
         </div>
@@ -73,18 +79,9 @@ const IndexPage = () => {
   
         {showLogin ? <Login /> : <Register />}
 
-        <button
-          onClick={() => setShowLogin(!showLogin)}
-          className="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded my-4 transition duration-300 ease-in-out focus:outline-none focus:shadow-outline"
-        >
-          {showLogin ? 'Register' : 'Login'}
-        </button>
-<br></br>
-<Link href="/info" legacyBehavior>
-            <a className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out focus:outline-none focus:shadow-outline">
-              Info
-            </a>
-          </Link>
+      
+
+
         
         <div className="mt-8">
           <div className="grid grid-cols-3 gap-4">
@@ -98,8 +95,17 @@ const IndexPage = () => {
               </div>
             ))}
           </div>
+          
         </div>
+
+    
       </div>
+
+          <Link href="/info" legacyBehavior>
+            <a className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out focus:outline-none focus:shadow-outline">
+              Info
+            </a>
+          </Link>
     </div>
   );
 };

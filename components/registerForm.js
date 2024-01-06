@@ -32,22 +32,32 @@ const Register = () => {
     <div className="container mx-auto p-4">
       <div className="flex justify-center">
         <div className="w-full max-w-xs">
-          <form onSubmit={handleRegisterSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-            <h2 className="mb-4 font-bold text-lg">Register</h2>
+          <form onSubmit={handleRegisterSubmit} className="bg-black shadow-md rounded px-8 pt-6 pb-8 mb-4 border-2 border-pink-600">
+            <h2 className="mb-4 font-bold text-lg text-pink-600">Register</h2>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username-register">
+              <label className="block text-pink-500 text-sm font-bold mb-2" htmlFor="username-register">
                 Username
               </label>
-              <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username-register" type="text" name="username" value={registerInfo.username} onChange={handleRegisterChange} />
+              <input 
+                className="shadow appearance-none border border-pink-500 rounded w-full py-2 px-3 text-gray-300 leading-tight focus:outline-none focus:border-pink-700 bg-black" 
+                id="username-register" type="text" name="username" 
+                value={registerInfo.username} onChange={handleRegisterChange} 
+              />
             </div>
             <div className="mb-6">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password-register">
+              <label className="block text-pink-500 text-sm font-bold mb-2" htmlFor="password-register">
                 Password
               </label>
-              <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password-register" type="password" name="password" value={registerInfo.password} onChange={handleRegisterChange} />
+              <input 
+                className="shadow appearance-none border border-pink-500 rounded w-full py-2 px-3 text-gray-300 mb-3 leading-tight focus:outline-none focus:border-pink-700 bg-black" 
+                id="password-register" type="password" name="password" 
+                value={registerInfo.password} onChange={handleRegisterChange} 
+              />
             </div>
             <div className="flex items-center justify-between">
-              <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+              <button 
+                className="bg-pink-600 hover:bg-pink-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
+                type="submit">
                 Register
               </button>
             </div>
@@ -56,6 +66,7 @@ const Register = () => {
       </div>
     </div>
   );
+  
 };
 
 export default Register;
