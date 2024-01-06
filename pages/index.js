@@ -61,7 +61,7 @@ const containerStyle = {
   backgroundColor: 'black',
   borderRadius: '2px',
   boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-  padding: '4rem',
+  padding: '1rem',
 };
 
 return (
