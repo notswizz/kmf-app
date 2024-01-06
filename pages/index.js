@@ -49,8 +49,24 @@ const IndexPage = () => {
     boxShadow: '0 2px 5px rgba(0, 0, 0, 0.3)',
 };
 
+const globalStyle = {
+  boxSizing: 'border-box',
+};
 
-  return (
+const containerStyle = {
+  width: '100%',
+  maxWidth: '100vw',
+  margin: '0 auto',
+  overflow: 'hidden',
+  backgroundColor: 'black',
+  borderRadius: '2px',
+  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+  padding: '4rem',
+};
+
+return (
+  <div style={globalStyle} className="min-h-screen flex flex-col justify-center items-center" style={{ backgroundColor: '#1D1D1D' }}>
+    <div style={containerStyle} className="mx-auto">
     <div className="min-h-screen flex flex-col justify-center items-center" style={{ backgroundColor: '#1D1D1D' }}>
       <div className="container mx-auto p-4" style={{ backgroundColor: 'black', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
       
@@ -101,6 +117,8 @@ const IndexPage = () => {
 
 
       </div>
+    </div>
+    </div>
     </div>
   );
 };
