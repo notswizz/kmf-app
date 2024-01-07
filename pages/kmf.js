@@ -209,7 +209,6 @@ const [showSubmitButton, setShowSubmitButton] = useState(true);
       )}
   
       <div className={`container mx-auto p-4 ${gradients[currentGradient]}`}>
-        <h1 className="text-4xl font-bold text-center mb-8 text-white">KMF</h1>
         {showImages && (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {images.map((image, index) => (
