@@ -3,15 +3,7 @@ import Cookies from 'js-cookie';
 import PicModal from '../components/picModal';
 import NavBar from '../components/navBar';
 
-async function fetchAverageScores() {
-  const response = await fetch('/api/averageScores');
-  if (response.ok) {
-    const averages = await response.json();
-    // Process and display averages
-  } else {
-    console.error('Failed to fetch average scores');
-  }
-}
+
 
 
 const KMFPage = () => {
