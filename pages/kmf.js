@@ -196,16 +196,16 @@ const [showSubmitButton, setShowSubmitButton] = useState(true);
 
  return (
     <>
-      <NavBar updatePoints={updatePoints} />
+      <NavBar  />
       {showPointsDisplay && (
-        <div className="flex justify-center items-center h-screen">
-          <div className="text-center p-8 bg-blue-500 rounded-lg shadow-xl">
-            <h2 className="text-5xl font-bold text-white mb-4">New Points</h2>
-            <p className="text-3xl font-semibold text-yellow-300">{userPoints}</p>
-            {/* Display the GIF when points are showing */}
-            <img src="/zoomkmf.gif" alt="Animated Celebration" className="mt-4" />
-          </div>
-        </div>
+<div className="flex justify-center items-center h-screen">
+  <div className="text-center p-12 bg-blue-600 rounded-lg shadow-xl transform transition duration-500 hover:scale-105">
+    <h2 className="text-6xl font-bold text-white mb-6">Points</h2>
+    <p className="text-4xl font-semibold text-yellow-400 animate-pulse">{userPoints}</p>
+    <img src="/zoomkmf.gif" alt="Animated Celebration" className="mt-6 w-3/4 mx-auto" />
+  </div>
+</div>
+
       )}
   
       <div className={`container mx-auto p-4 ${gradients[currentGradient]}`}>
@@ -243,13 +243,15 @@ const [showSubmitButton, setShowSubmitButton] = useState(true);
             ))}
           </div>
         )}
-        {isSubmitVisible() && showSubmitButton && (
-          <div className="text-center mt-8">
-            <button onClick={handleSubmit} className="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-6 rounded-full">
-              Submit
-            </button>
-          </div>
-        )}
+     {isSubmitVisible() && showSubmitButton && (
+  <div className="text-center mt-8">
+    <button onClick={handleSubmit} className="galaxy-button">
+      Submit
+    </button>
+  </div>
+)}
+
+
       </div>
       <PicModal
         show={modalShow}
