@@ -19,6 +19,7 @@ const [showPointsDisplay, setShowPointsDisplay] = useState(false);
 const [userPoints, setUserPoints] = useState(0);
 const [showImages, setShowImages] = useState(true);
 const [showSubmitButton, setShowSubmitButton] = useState(true);
+const [currentImageId, setCurrentImageId] = useState('');
 
 
 
@@ -105,8 +106,9 @@ const [showSubmitButton, setShowSubmitButton] = useState(true);
     return selections.kill && selections.marry && selections.fuck;
   };
 
-  const openModal = (imageUrl) => {
+  const openModal = (imageUrl, imageId) => {
     setCurrentImageUrl(imageUrl);
+    setCurrentImageId(imageId); // Set the current image ID
     setModalShow(true);
   };
   
@@ -225,7 +227,7 @@ const [showSubmitButton, setShowSubmitButton] = useState(true);
                   className="w-full object-cover h-72 sm:h-60 cursor-pointer"
                   src={image.url}
                   alt="Image"
-                  onClick={() => openModal(image.url)}
+                  onClick={() => openModal(image.url, image._id)}
                 />
                 <div className="flex justify-center space-x-3 mt-4 mb-6">
                   <button
@@ -262,10 +264,12 @@ const [showSubmitButton, setShowSubmitButton] = useState(true);
 
       </div>
       <PicModal
-        show={modalShow}
-        onClose={closeModal}
-        imageUrl={currentImageUrl}
-      />
+  show={modalShow}
+  onClose={closeModal}
+  imageUrl={currentImageUrl}
+  imageId={currentImageId} // Pass the image ID
+  // ... other props you might need to pass, like userPoints, setUserPoints ...
+/>
     </>
   );
   
