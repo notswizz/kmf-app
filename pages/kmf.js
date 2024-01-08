@@ -2,11 +2,14 @@ import React, { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import PicModal from '../components/picModal';
 import NavBar from '../components/navBar';
+import { useRouter } from 'next/router';
+
 
 
 
 
 const KMFPage = () => {
+  const router = useRouter(); // Initialize the router
   const [images, setImages] = useState([]);
   const [selections, setSelections] = useState({ kill: null, marry: null, fuck: null });
   const [modalShow, setModalShow] = useState(false);
@@ -20,9 +23,17 @@ const [showSubmitButton, setShowSubmitButton] = useState(true);
 
 
 
+
+
   useEffect(() => {
-    fetchImages();
-  }, []);
+    // Check for user cookie or any other condition that must be met
+    const userCookie = Cookies.get('user');
+    if (!userCookie) { // Replace otherCondition with your specific condition
+      router.push('/'); // Redirect to the index page
+    } else {
+      fetchImages();
+    }
+  }, [router]); // Include router in the dependency array
 
   const fetchNames = async (personIds) => {
     try {
@@ -110,6 +121,11 @@ const [showSubmitButton, setShowSubmitButton] = useState(true);
     'bg-gradient-to-r from-orange-500 to-yellow-500',
     // Add more gradients as needed
   ];
+
+  const handleError = (message) => {
+    console.error(message);
+    router.push('/'); // Redirect to the index page when an error occurs
+  };
 
   const handleSubmit = async () => {
     const uniqueSelections = new Set(Object.values(selections));
