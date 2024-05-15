@@ -20,21 +20,26 @@ const [userPoints, setUserPoints] = useState(0);
 const [showImages, setShowImages] = useState(true);
 const [showSubmitButton, setShowSubmitButton] = useState(true);
 const [currentImageId, setCurrentImageId] = useState('');
+const [userId, setUserId] = useState(null);
 
 
 
 
 
 
-  useEffect(() => {
-    // Check for user cookie or any other condition that must be met
-    const userCookie = Cookies.get('user');
-    if (!userCookie) { // Replace otherCondition with your specific condition
-      router.push('/'); // Redirect to the index page
-    } else {
-      fetchImages();
-    }
-  }, [router]); // Include router in the dependency array
+
+useEffect(() => {
+  const userCookie = Cookies.get('user');
+  if (!userCookie) {
+    router.push('/');
+  } else {
+    const user = JSON.parse(userCookie);
+    setUserId(user._id.$oid); // Set the user ID to the string inside _id.$oid
+    fetchImages();
+  }
+}, [router]);
+
+
 
   const fetchNames = async (personIds) => {
     try {
@@ -267,9 +272,12 @@ const [currentImageId, setCurrentImageId] = useState('');
   show={modalShow}
   onClose={closeModal}
   imageUrl={currentImageUrl}
-  imageId={currentImageId} // Pass the image ID
-  // ... other props you might need to pass, like userPoints, setUserPoints ...
+  imageId={currentImageId}
+  userId={userId} // Pass the actual user ID
+  userPoints={userPoints}
+  setUserPoints={setUserPoints}
 />
+
     </>
   );
   

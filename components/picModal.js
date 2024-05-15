@@ -18,7 +18,7 @@ const PicModal = ({ show, onClose, imageUrl, imageId, userPoints, setUserPoints 
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ userId: 'yourUserId', pointsToDeduct: pointsCost, imageId }),
+      body: JSON.stringify({ userId, pointsToDeduct: pointsCost, imageId }),
     });
 
     if (response.ok) {
