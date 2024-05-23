@@ -35,7 +35,7 @@ const IndexPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-[#1D1D1D]">
-      <div className="w-[375px] bg-[#1D1D1D]">
+      <div className="w-[450px] bg-[#1D1D1D]">
         <div className="container mx-auto p-4 bg-black rounded-lg shadow-lg">
           <div className="flex justify-between items-center my-4">
             {randomImages.length > 0 && (
