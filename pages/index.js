@@ -33,93 +33,64 @@ const IndexPage = () => {
     return shuffled;
   };
 
-  const fixedButtonStyle = {
-    position: 'fixed',
-    bottom: '20px',
-    right: '10px',
-    backgroundColor: 'rgba(0, 0, 0, 0.7)', // Semi-transparent black
-    color: 'white',
-    border: '2px solid #FFFFFF', // White border
-    borderRadius: '50%',
-    width: '50px',
-    height: '50px',
-    textAlign: 'center',
-    lineHeight: '50px', // Vertically center the text/icon
-    cursor: 'pointer',
-    boxShadow: '0 2px 5px rgba(0, 0, 0, 0.3)',
-};
-
-const globalStyle = {
-  boxSizing: 'border-box',
-};
-
-const containerStyle = {
-  width: '100%',
-  maxWidth: '100vw',
-  margin: '0 auto',
-  overflow: 'hidden',
-  backgroundColor: 'black',
-  borderRadius: '2px',
-  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-  padding: '1rem',
-};
-
-return (
-  <div className="min-h-screen flex flex-col justify-center items-center bg-[#1D1D1D]">
-    <div className="w-[375px] bg-[#1D1D1D]">
-      <div className="container mx-auto p-4 bg-black rounded-lg shadow-lg">
-        <div className="flex justify-between items-center my-4">
-          {randomImages.length > 0 && (
-            <img
-              src={randomImages[0].url}
-              alt="Random Image"
-              className="w-1/3 h-48 object-cover"
-            />
-          )}
-          <img src="/KMF.png" alt="KMF Logo" className="max-h-[150px]" />
-          {randomImages.length > 1 && (
-            <img
-              src={randomImages[1].url}
-              alt="Random Image"
-              className="w-1/3 h-48 object-cover"
-            />
-          )}
-        </div>
-
-        {showLogin ? <Login /> : <Register />}
-
-        <button
-          onClick={() => setShowLogin(!showLogin)}
-          className="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded my-4 transition duration-300 ease-in-out focus:outline-none focus:shadow-outline"
-        >
-          {showLogin ? 'Register' : 'Login'}
-        </button>
-        
-        <div className="fixed bottom-4 right-4">
-          <Link href="/info" legacyBehavior>
-            <a title="Info" style={{ textDecoration: 'none', color: 'inherit' }}>
-              ℹ {/* Emoji or icon for info */}
-            </a>
-          </Link>
-        </div>
-        
-        <div className="grid grid-cols-3 gap-4 mt-8">
-          {moreRandomImages.map((image) => (
-            <div key={image._id} className="border rounded-md overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+  return (
+    <div className="min-h-screen flex flex-col justify-center items-center bg-[#1D1D1D]">
+      <div className="w-[375px] bg-[#1D1D1D]">
+        <div className="container mx-auto p-4 bg-black rounded-lg shadow-lg">
+          <div className="flex justify-between items-center my-4">
+            {randomImages.length > 0 && (
               <img
-                src={image.url}
+                src={randomImages[0].url}
                 alt="Random Image"
-                className="w-full h-48 object-cover"
+                className="w-1/3 h-48 object-cover"
               />
-            </div>
-          ))}
+            )}
+            <img src="/KMF.png" alt="KMF Logo" className="max-h-[150px]" />
+            {randomImages.length > 1 && (
+              <img
+                src={randomImages[1].url}
+                alt="Random Image"
+                className="w-1/3 h-48 object-cover"
+              />
+            )}
+          </div>
+
+          {showLogin ? <Login /> : <Register />}
+
+          <div className="flex justify-between items-center my-4">
+            <button
+              onClick={() => setShowLogin(!showLogin)}
+              className="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out focus:outline-none focus:shadow-outline"
+            >
+              {showLogin ? 'Register' : 'Login'}
+            </button>
+
+            <Link href="/info" legacyBehavior>
+              <a
+                className="bg-gray-700 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out focus:outline-none focus:shadow-outline"
+                title="Info"
+                style={{ textDecoration: 'none', color: 'inherit' }}
+              >
+                ℹ {/* Emoji or icon for info */}
+              </a>
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-3 gap-4 mt-8">
+            {moreRandomImages.map((image) => (
+              <div key={image._id} className="border rounded-md overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+                <img
+                  src={image.url}
+                  alt="Random Image"
+                  className="w-full h-48 object-cover"
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
-  </div>
-);
-
-
+  );
 };
 
 export default IndexPage;
