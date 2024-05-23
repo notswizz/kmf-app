@@ -65,11 +65,9 @@ const containerStyle = {
 };
 
 return (
-  <div style={globalStyle} className="min-h-screen flex flex-col justify-center items-center" style={{ backgroundColor: '#1D1D1D' }}>
-    <div style={containerStyle} className="mx-auto">
-    <div className="min-h-screen flex flex-col justify-center items-center" style={{ backgroundColor: '#1D1D1D' }}>
-      <div className="container mx-auto p-4" style={{ backgroundColor: 'black', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
-      
+  <div className="min-h-screen flex flex-col justify-center items-center bg-[#1D1D1D]">
+    <div className="w-[375px] bg-[#1D1D1D]">
+      <div className="container mx-auto p-4 bg-black rounded-lg shadow-lg">
         <div className="flex justify-between items-center my-4">
           {randomImages.length > 0 && (
             <img
@@ -78,7 +76,7 @@ return (
               className="w-1/3 h-48 object-cover"
             />
           )}
-          <img src="/KMF.png" alt="KMF Logo" style={{ maxHeight: '150px' }} />
+          <img src="/KMF.png" alt="KMF Logo" className="max-h-[150px]" />
           {randomImages.length > 1 && (
             <img
               src={randomImages[1].url}
@@ -96,13 +94,15 @@ return (
         >
           {showLogin ? 'Register' : 'Login'}
         </button>
-        <div style={fixedButtonStyle}>
-  <Link href="/info" legacyBehavior>
-    <a title="Info" style={{ textDecoration: 'none', color: 'inherit' }}>
-      ℹ {/* Emoji or icon for info */}
-    </a>
-  </Link>
-</div>
+        
+        <div className="fixed bottom-4 right-4">
+          <Link href="/info" legacyBehavior>
+            <a title="Info" style={{ textDecoration: 'none', color: 'inherit' }}>
+              ℹ {/* Emoji or icon for info */}
+            </a>
+          </Link>
+        </div>
+        
         <div className="grid grid-cols-3 gap-4 mt-8">
           {moreRandomImages.map((image) => (
             <div key={image._id} className="border rounded-md overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
@@ -114,13 +114,12 @@ return (
             </div>
           ))}
         </div>
-
-
       </div>
     </div>
-    </div>
-    </div>
-  );
+  </div>
+);
+
+
 };
 
 export default IndexPage;

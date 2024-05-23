@@ -11,7 +11,7 @@ import { useRouter } from 'next/router';
 const KMFPage = () => {
   const router = useRouter(); // Initialize the router
   const [images, setImages] = useState([]);
-  const [selections, setSelections] = useState({ kill: null, marry: null, fuck: null });
+  const [selections, setSelections] = useState({ kiss: null, marry: null, fade: null });
   const [modalShow, setModalShow] = useState(false);
 const [currentImageUrl, setCurrentImageUrl] = useState('');
 const [currentGradient, setCurrentGradient] = useState(0);
@@ -108,7 +108,7 @@ useEffect(() => {
   };
 
   const isSubmitVisible = () => {
-    return selections.kill && selections.marry && selections.fuck;
+    return selections.kiss && selections.marry && selections.fade;
   };
 
   const openModal = (imageUrl, imageId) => {
@@ -168,6 +168,8 @@ useEffect(() => {
               // Update the points display and NavBar
               await updatePoints();
               setShowPointsDisplay(true);
+              setImages([]); // Clear the current images
+  
               // Fetch the updated user data
               const userResponse = await fetch(`/api/getUser?username=${encodeURIComponent(user.username)}`);
               if (userResponse.ok) {
@@ -178,12 +180,12 @@ useEffect(() => {
                 setUserPoints(updatedUserData.points);
                 setShowPointsDisplay(true);
   
-                // Set a timeout to hide the points display and show images and button
-                setTimeout(() => {
+                // Set a timeout to hide the points display and show new images and button
+                setTimeout(async () => {
                   setShowPointsDisplay(false);
+                  await fetchImages(); // Fetch new images after the timeout
                   setShowImages(true);
                   setShowSubmitButton(true);
-                  fetchImages(); // Fetch new images after the timeout
                 }, 5000); // Adjust the duration as needed
               } else {
                 console.error('Failed to fetch updated user data');
@@ -192,7 +194,7 @@ useEffect(() => {
               console.error('Failed to update points');
             }
   
-            setSelections({ kill: null, marry: null, fuck: null });
+            setSelections({ kiss: null, marry: null, fade: null });
           } else {
             console.error('Submission failed');
           }
@@ -208,76 +210,78 @@ useEffect(() => {
   };
   
   
-
- return (
+  
+  return (
     <>
-      <NavBar  />
+      <NavBar />
       {showPointsDisplay && (
-<div className="flex justify-center items-center h-screen">
-  <div className="text-center p-12 bg-blue-600 rounded-lg shadow-xl transform transition duration-500 hover:scale-105">
-    <h2 className="text-6xl font-bold text-white mb-6">Points</h2>
-    <p className="text-4xl font-semibold text-yellow-400 animate-pulse">{userPoints}</p>
-    <img src="/zoomkmf.gif" alt="Animated Celebration" className="mt-6 w-3/4 mx-auto" />
-  </div>
-</div>
-
+        <div className="flex justify-center items-center min-h-screen bg-gray-900">
+          <div className="w-[375px] h-[667px] bg-gradient-to-r from-purple-500 to-blue-600 rounded-lg shadow-2xl overflow-hidden border border-gray-700">
+            <div className="flex justify-center items-center h-full">
+              <div className="text-center p-8 bg-gradient-to-r from-blue-500 to-green-500 rounded-lg shadow-xl transform transition duration-300 hover:scale-105 w-full">
+                <h2 className="text-4xl font-bold text-white mb-4">Points</h2>
+                <p className="text-3xl font-semibold text-yellow-300 animate-pulse">{userPoints}</p>
+                <img src="/zoomkmf.gif" alt="Animated Celebration" className="mt-4 w-3/4 mx-auto" />
+              </div>
+            </div>
+          </div>
+        </div>
       )}
   
-      <div className={`container mx-auto p-4 ${gradients[currentGradient]}`}>
+      <div className={`container mx-auto p-4 ${gradients[currentGradient]} w-[375px]`}>
         {showImages && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 gap-6">
             {images.map((image, index) => (
-              <div key={index} className="max-w-sm rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out bg-white">
+              <div key={index} className="max-w-sm rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out bg-gray-800">
                 <img
-                  className="w-full object-cover h-72 sm:h-60 cursor-pointer"
+                  className="w-full h-72 object-contain cursor-pointer border-2 border-gray-600 rounded-lg shadow-lg p-1"
                   src={image.url}
                   alt="Image"
                   onClick={() => openModal(image.url, image._id)}
                 />
-                <div className="flex justify-center space-x-3 mt-4 mb-6">
+  
+                <div className="flex justify-center space-x-3 mt-4 mb-6 bg-gray-900 p-4 rounded-lg shadow-md">
                   <button
-                    onClick={() => handleSelection('kill', image._id)}
-                    className={`${selections.kill === image._id ? "bg-red-600 hover:bg-red-800" : "bg-gray-400 hover:bg-gray-500"} text-white font-bold py-2 px-4 rounded-full text-base`}
+                    onClick={() => handleSelection('kiss', image._id)}
+                    className={`${selections.kiss === image._id ? "bg-red-600 hover:bg-red-800" : "bg-gray-500 hover:bg-gray-600"} text-white font-bold py-2 px-4 rounded-full text-base transition duration-300 ease-in-out`}
                   >
-                    Kill
+                    Kiss
                   </button>
                   <button
                     onClick={() => handleSelection('marry', image._id)}
-                    className={`${selections.marry === image._id ? "bg-green-600 hover:bg-green-800" : "bg-gray-400 hover:bg-gray-500"} text-white font-bold py-2 px-4 rounded-full text-base`}
+                    className={`${selections.marry === image._id ? "bg-green-600 hover:bg-green-800" : "bg-gray-500 hover:bg-gray-600"} text-white font-bold py-2 px-4 rounded-full text-base transition duration-300 ease-in-out`}
                   >
                     Marry
                   </button>
                   <button
-                    onClick={() => handleSelection('fuck', image._id)}
-                    className={`${selections.fuck === image._id ? "bg-blue-600 hover:bg-blue-800" : "bg-gray-400 hover:bg-gray-500"} text-white font-bold py-2 px-4 rounded-full text-base`}
+                    onClick={() => handleSelection('fade', image._id)}
+                    className={`${selections.fade === image._id ? "bg-blue-600 hover:bg-blue-800" : "bg-gray-500 hover:bg-gray-600"} text-white font-bold py-2 px-4 rounded-full text-base transition duration-300 ease-in-out`}
                   >
-                    Fuck
+                    Fade
                   </button>
                 </div>
               </div>
             ))}
           </div>
         )}
-     {isSubmitVisible() && showSubmitButton && (
-  <div className="text-center mt-8">
-    <button onClick={handleSubmit} className="galaxy-button">
-      Submit
-    </button>
-  </div>
-)}
-
-
+        {isSubmitVisible() && showSubmitButton && (
+          <div className="text-center mt-8">
+            <button onClick={handleSubmit} className="galaxy-button">
+              Submit
+            </button>
+          </div>
+        )}
       </div>
+      
       <PicModal
-  show={modalShow}
-  onClose={closeModal}
-  imageUrl={currentImageUrl}
-  imageId={currentImageId}
-  userId={userId} // Pass the actual user ID
-  userPoints={userPoints}
-  setUserPoints={setUserPoints}
-/>
-
+        show={modalShow}
+        onClose={closeModal}
+        imageUrl={currentImageUrl}
+        imageId={currentImageId}
+        userId={userId}
+        userPoints={userPoints}
+        setUserPoints={setUserPoints}
+      />
     </>
   );
   

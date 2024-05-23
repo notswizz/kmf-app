@@ -5,7 +5,7 @@ import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 const upload = multer();
 
 async function connectToDatabase() {
-  const client = await MongoClient.connect(process.env.MONGODB_URI);
+  const client = await MongoClient.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
   return client.db();
 }
 
@@ -47,15 +47,14 @@ export default function handler(req, res) {
       const collection = db.collection('images');
       const file = req.file;
 
-      // Retrieve additional data and score from the request
+      // Retrieve additional data from the request
       const personId = req.body.person;
-      const kill = parseInt(req.body.kill);
-      const marry = parseInt(req.body.marry);
-      const fuck = parseInt(req.body.fuck);
-      const score = parseInt(req.body.score);  // Retrieve score
+      const kiss = parseInt(req.body.kiss, 10);
+      const marry = parseInt(req.body.marry, 10);
+      const fade = parseInt(req.body.fade, 10);
+      const score = parseInt(req.body.score, 10);
 
       const fileName = `uploads/${Date.now()}-${file.originalname}`;
-
       const fileUrl = await uploadToS3(file, process.env.AWS_BUCKET_NAME, fileName);
 
       // Save metadata including score in MongoDB
@@ -64,10 +63,10 @@ export default function handler(req, res) {
         url: fileUrl,
         personId,
         uploadDate: new Date(),
-        kill,
+        kiss,
         marry,
-        fuck,
-        score  // Include score in the metadata
+        fade,
+        score,
       };
 
       const result = await collection.insertOne(metadata);

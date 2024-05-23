@@ -4,10 +4,8 @@ const AddPic = () => {
   const [images, setImages] = useState([]);
   const [people, setPeople] = useState([]);
   const [selectedPerson, setSelectedPerson] = useState('');
-  const [killCount, setKillCount] = useState(0);
-  const [marryCount, setMarryCount] = useState(0);
-  const [fuckCount, setFuckCount] = useState(0);
   const [submissionStatus, setSubmissionStatus] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchPeople = async () => {
@@ -29,7 +27,8 @@ const AddPic = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setSubmissionStatus(''); // Reset submission status on new submit
+    setSubmissionStatus('');
+    setIsLoading(true);
 
     if (images.length > 0) {
       let uploadSuccessful = true;
@@ -38,9 +37,6 @@ const AddPic = () => {
         const formData = new FormData();
         formData.append('image', image);
         formData.append('person', selectedPerson);
-        formData.append('kill', killCount);
-        formData.append('marry', marryCount);
-        formData.append('fuck', fuckCount);
 
         try {
           const response = await fetch('/api/upload', {
@@ -51,29 +47,29 @@ const AddPic = () => {
           if (!response.ok) {
             console.error("Upload failed for an image");
             uploadSuccessful = false;
-            break; // Stop the loop if any upload fails
+            break;
           }
         } catch (error) {
           console.error("Error during upload: ", error);
           uploadSuccessful = false;
-          break; // Stop the loop on error
+          break;
         }
       }
+
+      setIsLoading(false);
 
       if (uploadSuccessful) {
         console.log("All images uploaded successfully");
         setSubmissionStatus("All images uploaded successfully");
-        // Clear the images and counts after successful upload
         setImages([]);
-        setKillCount(0);
-        setMarryCount(0);
-        setFuckCount(0);
+        setSelectedPerson('');
       } else {
         setSubmissionStatus("Failed to upload some or all images");
       }
     } else {
       console.error("No image selected");
       setSubmissionStatus("No image selected");
+      setIsLoading(false);
     }
   };
 
@@ -86,30 +82,44 @@ const AddPic = () => {
   };
 
   return (
-    <form className="space-y-4" onSubmit={handleSubmit}>
+    <form className="p-5 max-w-lg mx-auto bg-white rounded-lg shadow-md space-y-6" onSubmit={handleSubmit}>
+      <div className="text-lg font-semibold text-center text-gray-800">
+        Upload an Image
+      </div>
       <select
         onChange={handlePersonChange}
         value={selectedPerson}
-        className="block w-full text-sm text-gray-500 mb-4"
+        className="form-select block w-full px-3 py-2 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
       >
         <option value="">Select a person</option>
         {people.map((person, index) => (
-          <option key={index} value={person._id}>
-            {person.name}
-          </option>
+          <option key={index} value={person._id}>{person.name}</option>
         ))}
       </select>
-      <input 
-        type="file" 
-        onChange={handleImageChange} 
-        multiple 
-        className="block w-full text-sm text-gray-500"
+      <input
+        type="file"
+        onChange={handleImageChange}
+        multiple
+        className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
       />
-      <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-        Upload Image(s)
+      <button
+        type="submit"
+        className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+      >
+        {isLoading ? (
+          <div className="flex justify-center items-center">
+            <svg className="animate-spin h-5 w-5 mr-3 text-white" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+            </svg>
+            Uploading...
+          </div>
+        ) : (
+          'Upload Image(s)'
+        )}
       </button>
       {submissionStatus && (
-        <div className="mt-3 text-center">
+        <div className={`mt-3 text-center text-sm font-medium ${submissionStatus.includes('successfully') ? 'text-green-500' : 'text-red-500'}`}>
           {submissionStatus}
         </div>
       )}

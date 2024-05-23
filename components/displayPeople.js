@@ -4,14 +4,26 @@ const PersonDisplay = () => {
   const [people, setPeople] = useState([]);
   const [selectedPerson, setSelectedPerson] = useState('');
   const [images, setImages] = useState([]);
-  const [averageScore, setAverageScore] = useState(null); // State for average score
+  const [averageScore, setAverageScore] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchPeople = async () => {
-      const response = await fetch('/api/getPerson');
-      if (response.ok) {
-        const data = await response.json();
-        setPeople(data);
+      setLoading(true);
+      setError('');
+      try {
+        const response = await fetch('/api/getPerson');
+        if (response.ok) {
+          const data = await response.json();
+          setPeople(data);
+        } else {
+          throw new Error('Failed to fetch people');
+        }
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -23,58 +35,73 @@ const PersonDisplay = () => {
     setSelectedPerson(personId);
 
     if (personId) {
-      const response = await fetch(`/api/displayPerson?personId=${personId}`);
-      if (response.ok) {
-        const data = await response.json();
-        setImages(data);
+      try {
+        const response = await fetch(`/api/displayPerson?personId=${personId}`);
+        if (response.ok) {
+          const data = await response.json();
+          setImages(data);
+        } else {
+          throw new Error('Failed to fetch images');
+        }
+      } catch (error) {
+        console.error(error);
+        setError(error.message);
       }
     } else {
-      // Clear images and average score if no person is selected
       setImages([]);
       setAverageScore(null);
     }
   };
 
   const handleDeleteImage = async (imageId) => {
-    // Send a DELETE request to your API endpoint to delete the image
-    const response = await fetch(`/api/deleteImage?imageId=${imageId}`, {
-      method: 'DELETE',
-    });
+    try {
+      const response = await fetch(`/api/deleteImage?imageId=${imageId}`, {
+        method: 'DELETE',
+      });
 
-    if (response.ok) {
-      // If deletion is successful, remove the image from the state
-      setImages((prevImages) => prevImages.filter((image) => image._id !== imageId));
-    } else {
-      // Handle error if the deletion fails
-      console.error('Failed to delete image');
+      if (response.ok) {
+        setImages((prevImages) => prevImages.filter((image) => image._id !== imageId));
+      } else {
+        throw new Error('Failed to delete image');
+      }
+    } catch (error) {
+      console.error(error);
+      setError(error.message);
     }
   };
 
-  // Fetch and update the average score when a person is selected
   useEffect(() => {
     const fetchAverageScore = async () => {
       if (selectedPerson) {
-        const response = await fetch(`/api/averageScores?personId=${selectedPerson}`);
-        if (response.ok) {
-          const data = await response.json();
-          // Assuming the API returns a single object with an averageScore property
-          setAverageScore(data[0].averageScore);
+        try {
+          const response = await fetch(`/api/averageScores?personId=${selectedPerson}`);
+          if (response.ok) {
+            const data = await response.json();
+            setAverageScore(data.averageScore);
+          } else {
+            throw new Error('Failed to fetch average score');
+          }
+        } catch (error) {
+          console.error(error);
+          setError(error.message);
         }
       }
     };
 
     fetchAverageScore();
-  }, [selectedPerson]); // Only run when selectedPerson changes
+  }, [selectedPerson]);
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow">
       <h2 className="text-2xl font-semibold mb-4">Select a Person</h2>
+      {loading && <p>Loading...</p>}
+      {error && <p className="text-red-500">{error}</p>}
       <div className="flex items-center mb-4">
         <label className="text-lg font-medium mr-2">Select a person:</label>
         <select
           value={selectedPerson}
           onChange={handleSelectPerson}
-          className="border rounded-md p-2"
+          className="form-select appearance-none block w-full px-3 py-2 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
         >
           <option value="">Select a person</option>
           {people.map((person) => (
@@ -101,21 +128,21 @@ const PersonDisplay = () => {
           </h3>
           <ul className="grid grid-cols-2 gap-4">
             {images.map((image) => (
-              <li key={image._id} className="border rounded-md overflow-hidden">
+              <li key={image._id} className="border rounded-lg overflow-hidden shadow">
                 <img
                   src={image.url}
                   alt={`Image for ${selectedPerson}`}
                   className="w-full h-auto"
                 />
-                <p className="text-center py-2 bg-gray-100">
+                <div className="p-4 bg-gray-100 text-center">
                   Score: {image.score}
-                </p>
-                <button
-                  onClick={() => handleDeleteImage(image._id)}
-                  className="bg-red-500 text-white py-1 px-2 rounded mt-2 hover:bg-red-600"
-                >
-                  Delete
-                </button>
+                  <button
+                    onClick={() => handleDeleteImage(image._id)}
+                    className="ml-2 inline-block bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+                  >
+                    Delete
+                  </button>
+                </div>
               </li>
             ))}
           </ul>

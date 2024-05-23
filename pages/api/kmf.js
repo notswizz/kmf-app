@@ -17,7 +17,7 @@ export default async function handler(req, res) {
       for (const [category, id] of Object.entries(selections)) {
         if (id) {
           try {
-            // Update kill, marry, fuck counts
+            // Update kiss, marry, fade counts
             const updateResult = await collection.updateOne(
               { "_id": new ObjectId(id) },
               { $inc: { [category]: 1 } }
@@ -27,12 +27,12 @@ export default async function handler(req, res) {
             const updatedDoc = await collection.findOne({ "_id": new ObjectId(id) });
 
             // Calculate the total number of ratings
-            const totalRatings = (updatedDoc.marry || 0) + (updatedDoc.fuck || 0) + (updatedDoc.kill || 0);
+            const totalRatings = (updatedDoc.marry || 0) + (updatedDoc.fade || 0) + (updatedDoc.kiss || 0);
 
             let newScore = 0;
             if (totalRatings > 0) {
               // Recalculate score divided by total ratings
-              newScore = ((updatedDoc.marry || 0) * 3 + (updatedDoc.fuck || 0) * 1 - (updatedDoc.kill || 0) * 5) / totalRatings;
+              newScore = ((updatedDoc.marry || 0) * 3 + (updatedDoc.fade || 0) * 1 - (updatedDoc.kiss || 0) * 5) / totalRatings;
             }
 
             // Update the score in the document
