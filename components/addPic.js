@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 const AddPic = () => {
   const [images, setImages] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
+  const [loadingProgress, setLoadingProgress] = useState([]);
   const [people, setPeople] = useState([]);
   const [selectedPerson, setSelectedPerson] = useState('');
   const [submissionStatus, setSubmissionStatus] = useState('');
@@ -33,6 +34,31 @@ const AddPic = () => {
       return { file, preview: URL.createObjectURL(file) };
     });
     setImagePreviews(filePreviews);
+
+    const progressArray = files.map(() => 0);
+    setLoadingProgress(progressArray);
+
+    files.forEach((file, index) => {
+      const reader = new FileReader();
+      reader.onprogress = (e) => {
+        if (e.lengthComputable) {
+          const progress = Math.round((e.loaded * 100) / e.total);
+          setLoadingProgress((prev) => {
+            const newProgress = [...prev];
+            newProgress[index] = progress;
+            return newProgress;
+          });
+        }
+      };
+      reader.onloadend = () => {
+        setLoadingProgress((prev) => {
+          const newProgress = [...prev];
+          newProgress[index] = 100;
+          return newProgress;
+        });
+      };
+      reader.readAsDataURL(file);
+    });
   };
 
   const handleSubmit = async (event) => {
@@ -115,6 +141,11 @@ const AddPic = () => {
             {imagePreviews.map((img, index) => (
               <div key={index} className="relative">
                 <img src={img.preview} alt={`preview-${index}`} className="w-full h-32 object-cover rounded" />
+                {loadingProgress[index] < 100 && (
+                  <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-gray-900 bg-opacity-75 text-white">
+                    {loadingProgress[index]}%
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -123,6 +154,7 @@ const AddPic = () => {
       <button
         type="submit"
         className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        disabled={loadingProgress.some(progress => progress < 100)}
       >
         {isLoading ? (
           <div className="flex justify-center items-center">
