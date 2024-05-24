@@ -200,46 +200,46 @@ const KMFPage = () => {
     <>
       <NavBar />
       {showPointsDisplay && (
-        <div className="flex justify-center items-center min-h-screen bg-gray-100">
-          <div className="w-[375px] h-[667px] bg-white rounded-lg shadow-2xl overflow-hidden border border-gray-300">
+        <div className="flex justify-center items-center min-h-screen bg-gray-900">
+          <div className="w-[375px] h-[667px] bg-gray-800 rounded-lg shadow-2xl overflow-hidden border border-gray-700">
             <div className="flex justify-center items-center h-full">
-              <div className="text-center p-8 bg-blue-600 rounded-lg shadow-xl transform transition duration-300 hover:scale-105 w-full">
+              <div className="text-center p-8 bg-gray-700 rounded-lg shadow-xl transform transition duration-300 hover:scale-105 w-full">
                 <h2 className="text-4xl font-bold text-white mb-4">Points</h2>
-                <p className="text-3xl font-semibold text-yellow-400 animate-pulse">{userPoints}</p>
+                <p className="text-3xl font-semibold text-yellow-300 animate-pulse">{userPoints}</p>
                 <img src="/zoomkmf.gif" alt="Animated Celebration" className="mt-4 w-3/4 mx-auto" />
               </div>
             </div>
           </div>
         </div>
       )}
-
-      <div className={`container mx-auto p-4 ${gradients[currentGradient]} w-[375px]`}>
+  
+      <div className="container mx-auto p-4 w-[375px]">
         {showImages && (
           <div className="grid grid-cols-1 gap-6">
             {images.map((image, index) => (
-              <div key={index} className="max-w-sm rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out bg-white">
+              <div key={index} className="max-w-sm rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out bg-gray-800">
                 <img
-                  className="w-full h-72 object-contain cursor-pointer border-2 border-gray-300 rounded-lg shadow-lg p-1"
+                  className="w-full h-72 object-contain cursor-pointer border-2 border-gray-700 rounded-lg shadow-lg p-1"
                   src={image.url}
                   alt="Image"
                   onClick={() => openModal(image.url, image._id)}
                 />
-                <div className="flex justify-center space-x-3 mt-4 mb-6 bg-gray-800 p-4 rounded-lg shadow-md">
+                <div className="flex justify-center space-x-3 mt-4 mb-6 bg-gray-700 p-4 rounded-lg shadow-md">
                   <button
                     onClick={() => handleSelection('kiss', image._id)}
-                    className={`${selections.kiss === image._id ? "bg-red-600 hover:bg-red-800" : "bg-gray-500 hover:bg-gray-600"} text-white font-bold py-2 px-4 rounded-full text-base transition duration-300 ease-in-out`}
+                    className={`${selections.kiss === image._id ? "bg-red-500 hover:bg-red-700" : "bg-gray-500 hover:bg-gray-600"} text-white font-bold py-2 px-4 rounded-full text-base transition duration-300 ease-in-out`}
                   >
                     Kiss
                   </button>
                   <button
                     onClick={() => handleSelection('marry', image._id)}
-                    className={`${selections.marry === image._id ? "bg-green-600 hover:bg-green-800" : "bg-gray-500 hover:bg-gray-600"} text-white font-bold py-2 px-4 rounded-full text-base transition duration-300 ease-in-out`}
+                    className={`${selections.marry === image._id ? "bg-green-500 hover:bg-green-700" : "bg-gray-500 hover:bg-gray-600"} text-white font-bold py-2 px-4 rounded-full text-base transition duration-300 ease-in-out`}
                   >
                     Marry
                   </button>
                   <button
                     onClick={() => handleSelection('fade', image._id)}
-                    className={`${selections.fade === image._id ? "bg-blue-600 hover:bg-blue-800" : "bg-gray-500 hover:bg-gray-600"} text-white font-bold py-2 px-4 rounded-full text-base transition duration-300 ease-in-out`}
+                    className={`${selections.fade === image._id ? "bg-blue-500 hover:bg-blue-700" : "bg-gray-500 hover:bg-gray-600"} text-white font-bold py-2 px-4 rounded-full text-base transition duration-300 ease-in-out`}
                   >
                     Fade
                   </button>
@@ -252,7 +252,7 @@ const KMFPage = () => {
           <div className="text-center mt-8">
             <button
               onClick={handleSubmit}
-              className="galaxy-button bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-opacity-50"
+              className="bg-blue-500 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
               disabled={isLoading}
             >
               {isLoading ? (
@@ -270,7 +270,7 @@ const KMFPage = () => {
           </div>
         )}
       </div>
-      
+  
       <PicModal
         show={modalShow}
         onClose={closeModal}
@@ -282,6 +282,7 @@ const KMFPage = () => {
       />
     </>
   );
+  
 };
 
 export default KMFPage;

@@ -47,7 +47,14 @@ const IndexPage = () => {
                 />
               </div>
             )}
-            <img src="/KMF.png" alt="KMF Logo" className="max-h-[150px]" />
+            <div className="text-center">
+              <img src="/KMF.png" alt="KMF Logo" className="max-h-[150px]" />
+              <p className="text-xl font-bold text-white mt-2">
+                <span className="block">Kiss</span>
+                <span className="block">Marry</span>
+                <span className="block">Fade</span>
+              </p>
+            </div>
             {randomImages.length > 1 && (
               <div className="w-1/3 h-48 border rounded-md overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 bg-gradient-to-r from-purple-500 to-pink-500 flex justify-center items-center">
                 <img
