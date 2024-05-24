@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 const AddPic = () => {
   const [images, setImages] = useState([]);
+  const [imagePreviews, setImagePreviews] = useState([]);
   const [people, setPeople] = useState([]);
   const [selectedPerson, setSelectedPerson] = useState('');
   const [submissionStatus, setSubmissionStatus] = useState('');
@@ -24,6 +25,15 @@ const AddPic = () => {
 
     fetchPeople();
   }, []);
+
+  const handleImageChange = (event) => {
+    const files = Array.from(event.target.files);
+    setImages(files);
+    const filePreviews = files.map((file) => {
+      return { file, preview: URL.createObjectURL(file) };
+    });
+    setImagePreviews(filePreviews);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -62,6 +72,7 @@ const AddPic = () => {
         console.log("All images uploaded successfully");
         setSubmissionStatus("All images uploaded successfully");
         setImages([]);
+        setImagePreviews([]);
         setSelectedPerson('');
       } else {
         setSubmissionStatus("Failed to upload some or all images");
@@ -71,10 +82,6 @@ const AddPic = () => {
       setSubmissionStatus("No image selected");
       setIsLoading(false);
     }
-  };
-
-  const handleImageChange = (event) => {
-    setImages(Array.from(event.target.files));
   };
 
   const handlePersonChange = (event) => {
@@ -102,6 +109,17 @@ const AddPic = () => {
         multiple
         className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
       />
+      <div className="mt-4">
+        {imagePreviews.length > 0 && (
+          <div className="grid grid-cols-2 gap-4">
+            {imagePreviews.map((img, index) => (
+              <div key={index} className="relative">
+                <img src={img.preview} alt={`preview-${index}`} className="w-full h-32 object-cover rounded" />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
       <button
         type="submit"
         className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
