@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import { useRouter } from 'next/router'; // Import useRouter from Next.js
+import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
-
 
 const Register = () => {
   const [registerInfo, setRegisterInfo] = useState({ username: '', password: '' });
-  const router = useRouter(); // Initialize the router
+  const router = useRouter();
 
   const handleRegisterChange = (e) => {
     setRegisterInfo({ ...registerInfo, [e.target.name]: e.target.value });
@@ -21,8 +20,20 @@ const Register = () => {
     });
     const data = await response.json();
     if (response.ok) {
-      alert('Registration successful. Please proceed to Login');
-     
+      // Registration successful, now auto sign-in the user
+      const loginResponse = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(registerInfo),
+      });
+      const loginData = await loginResponse.json();
+      if (loginResponse.ok) {
+        // Save user session to cookies and redirect to /kfm page
+        Cookies.set('user', JSON.stringify(loginData.user), { expires: 1 });
+        router.push('/kmf'); // Redirect to /kfm page
+      } else {
+        alert('Login after registration failed: ' + loginData.message);
+      }
     } else {
       alert('Registration failed: ' + data.message);
     }
@@ -66,7 +77,6 @@ const Register = () => {
       </div>
     </div>
   );
-  
 };
 
 export default Register;
