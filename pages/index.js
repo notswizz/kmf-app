@@ -35,23 +35,27 @@ const IndexPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-[#1D1D1D]">
-      <div className="w-[450px] bg-[#1D1D1D]">
+      <div className="w-[375px] bg-[#1D1D1D]">
         <div className="container mx-auto p-4 bg-black rounded-lg shadow-lg">
           <div className="flex justify-between items-center my-4">
             {randomImages.length > 0 && (
-              <img
-                src={randomImages[0].url}
-                alt="Random Image"
-                className="w-1/3 h-48 object-cover"
-              />
+              <div className="w-1/3 h-48 border rounded-md overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 bg-gradient-to-r from-purple-500 to-pink-500 flex justify-center items-center">
+                <img
+                  src={randomImages[0].url}
+                  alt="Random Image"
+                  className="w-full h-full object-contain"
+                />
+              </div>
             )}
             <img src="/KMF.png" alt="KMF Logo" className="max-h-[150px]" />
             {randomImages.length > 1 && (
-              <img
-                src={randomImages[1].url}
-                alt="Random Image"
-                className="w-1/3 h-48 object-cover"
-              />
+              <div className="w-1/3 h-48 border rounded-md overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 bg-gradient-to-r from-purple-500 to-pink-500 flex justify-center items-center">
+                <img
+                  src={randomImages[1].url}
+                  alt="Random Image"
+                  className="w-full h-full object-contain"
+                />
+              </div>
             )}
           </div>
 
@@ -78,11 +82,11 @@ const IndexPage = () => {
 
           <div className="grid grid-cols-3 gap-4 mt-8">
             {moreRandomImages.map((image) => (
-              <div key={image._id} className="border rounded-md overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div key={image._id} className="border rounded-md overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 bg-gradient-to-r from-purple-500 to-pink-500 flex justify-center items-center">
                 <img
                   src={image.url}
                   alt="Random Image"
-                  className="w-full h-48 object-cover"
+                  className="w-full h-full object-contain"
                 />
               </div>
             ))}
