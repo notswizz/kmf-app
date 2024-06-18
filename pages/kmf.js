@@ -173,7 +173,7 @@ const KMFPage = () => {
                   setShowImages(true);
                   setShowSubmitButton(true);
                   setIsLoading(false);
-                }, 3000); // Adjust the duration as needed
+                }, 1000); // Adjust the duration as needed
               } else {
                 console.error('Failed to fetch updated user data');
               }

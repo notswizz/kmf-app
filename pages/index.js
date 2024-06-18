@@ -35,69 +35,66 @@ const IndexPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-[#1D1D1D]">
-      <div className="w-[375px] bg-[#1D1D1D]">
-        <div className="container mx-auto p-4 bg-black rounded-lg shadow-lg">
-          <div className="flex justify-between items-center my-4">
-            {randomImages.length > 0 && (
-              <div className="w-1/3 h-48 border rounded-md overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 bg-gradient-to-r from-purple-500 to-pink-500 flex justify-center items-center">
-                <img
-                  src={randomImages[0].url}
-                  alt="Random Image"
-                  className="w-full h-full object-contain"
-                />
-              </div>
-            )}
-            <div className="text-center">
-              <img src="/KMF.png" alt="KMF Logo" className="max-h-[150px]" />
-              <p className="text-xl font-bold text-white mt-2">
-                <span className="block">Kiss</span>
-                <span className="block">Marry</span>
-                <span className="block">Fade</span>
-              </p>
+      <div className="w-full max-w-sm bg-black p-6 rounded-lg shadow-lg">
+        <div className="flex justify-between items-center mb-8">
+          {randomImages.length > 0 && (
+            <div className="w-1/3 h-48 border rounded-md overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 bg-gradient-to-r from-purple-500 to-pink-500 flex justify-center items-center">
+              <img
+                src={randomImages[0].url}
+                alt="Random Image"
+                className="w-full h-full object-contain"
+              />
             </div>
-            {randomImages.length > 1 && (
-              <div className="w-1/3 h-48 border rounded-md overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 bg-gradient-to-r from-purple-500 to-pink-500 flex justify-center items-center">
-                <img
-                  src={randomImages[1].url}
-                  alt="Random Image"
-                  className="w-full h-full object-contain"
-                />
-              </div>
-            )}
+          )}
+          <div className="text-center mx-4">
+            <img src="/KMF.png" alt="KMF Logo" className="max-h-[100px] mx-auto" />
+            <p className="text-xl font-bold text-white mt-2">
+              <span className="block">Kiss</span>
+              <span className="block">Marry</span>
+              <span className="block">Fade</span>
+            </p>
           </div>
+          {randomImages.length > 1 && (
+            <div className="w-1/3 h-48 border rounded-md overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 bg-gradient-to-r from-purple-500 to-pink-500 flex justify-center items-center">
+              <img
+                src={randomImages[1].url}
+                alt="Random Image"
+                className="w-full h-full object-contain"
+              />
+            </div>
+          )}
+        </div>
 
-          {showLogin ? <Login /> : <Register />}
+        {showLogin ? <Login /> : <Register />}
 
-          <div className="flex justify-between items-center my-4">
-            <button
-              onClick={() => setShowLogin(!showLogin)}
-              className="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out focus:outline-none focus:shadow-outline"
+        <div className="flex justify-between items-center mt-8">
+          <button
+            onClick={() => setShowLogin(!showLogin)}
+            className="w-full bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out focus:outline-none focus:shadow-outline"
+          >
+            {showLogin ? 'Register' : 'Login'}
+          </button>
+          <Link href="/info" legacyBehavior>
+            <a
+              className="ml-4 bg-gray-700 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out focus:outline-none focus:shadow-outline"
+              title="Info"
+              style={{ textDecoration: 'none', color: 'inherit' }}
             >
-              {showLogin ? 'Register' : 'Login'}
-            </button>
+              ℹ {/* Emoji or icon for info */}
+            </a>
+          </Link>
+        </div>
 
-            <Link href="/info" legacyBehavior>
-              <a
-                className="bg-gray-700 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out focus:outline-none focus:shadow-outline"
-                title="Info"
-                style={{ textDecoration: 'none', color: 'inherit' }}
-              >
-                ℹ {/* Emoji or icon for info */}
-              </a>
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-3 gap-4 mt-8">
-            {moreRandomImages.map((image) => (
-              <div key={image._id} className="border rounded-md overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 bg-gradient-to-r from-purple-500 to-pink-500 flex justify-center items-center">
-                <img
-                  src={image.url}
-                  alt="Random Image"
-                  className="w-full h-full object-contain"
-                />
-              </div>
-            ))}
-          </div>
+        <div className="grid grid-cols-3 gap-4 mt-8">
+          {moreRandomImages.map((image) => (
+            <div key={image._id} className="border rounded-md overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 bg-gradient-to-r from-purple-500 to-pink-500 flex justify-center items-center">
+              <img
+                src={image.url}
+                alt="Random Image"
+                className="w-full h-full object-contain"
+              />
+            </div>
+          ))}
         </div>
       </div>
     </div>
