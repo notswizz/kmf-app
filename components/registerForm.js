@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
 
-const Register = () => {
+const Register = ({ onRegisterSuccess }) => {
   const [registerInfo, setRegisterInfo] = useState({ username: '', password: '' });
   const router = useRouter();
 
@@ -30,6 +30,7 @@ const Register = () => {
       if (loginResponse.ok) {
         // Save user session to cookies and redirect to /kfm page
         Cookies.set('user', JSON.stringify(loginData.user), { expires: 1 });
+        onRegisterSuccess(); // Call the success handler
         router.push('/kmf'); // Redirect to /kfm page
       } else {
         alert('Login after registration failed: ' + loginData.message);

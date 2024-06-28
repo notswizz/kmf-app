@@ -48,11 +48,13 @@ export default async function handler(req, res) {
               newScores[imageId] = newScore;
             }
 
-            // Update the user profile with their selection
-            await usersCollection.updateOne(
-              { "_id": new ObjectId(userId) },
-              { $push: { selections: { category, imageId } } }
-            );
+            // Update the user profile with their selection if userId is provided
+            if (userId) {
+              await usersCollection.updateOne(
+                { "_id": new ObjectId(userId) },
+                { $push: { selections: { category, imageId } } }
+              );
+            }
 
           } catch (updateError) {
             console.error(`Error updating ${category} for id ${imageId}:`, updateError);

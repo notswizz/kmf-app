@@ -132,13 +132,13 @@ const PersonDisplay = () => {
                 <img
                   src={image.url}
                   alt={`Image for ${selectedPerson}`}
-                  className="w-full h-auto"
+                  className="w-full h-48 object-cover"
                 />
                 <div className="p-4 bg-gray-100 text-center">
-                  Score: {image.score}
+                  <p className="text-lg font-semibold">Score: {image.score}</p>
                   <button
                     onClick={() => handleDeleteImage(image._id)}
-                    className="ml-2 inline-block bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+                    className="mt-2 inline-block bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
                   >
                     Delete
                   </button>

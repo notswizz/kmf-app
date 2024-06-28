@@ -10,7 +10,6 @@ const KMFPage = () => {
   const [selections, setSelections] = useState({ kiss: null, marry: null, fade: null });
   const [modalShow, setModalShow] = useState(false);
   const [currentImageUrl, setCurrentImageUrl] = useState('');
-  const [currentGradient, setCurrentGradient] = useState(0);
   const [showPointsDisplay, setShowPointsDisplay] = useState(false);
   const [userPoints, setUserPoints] = useState(0);
   const [showImages, setShowImages] = useState(true);
@@ -21,13 +20,12 @@ const KMFPage = () => {
 
   useEffect(() => {
     const userCookie = Cookies.get('user');
-    if (!userCookie) {
-      router.push('/');
-    } else {
+    if (userCookie) {
       const user = JSON.parse(userCookie);
       setUserId(user._id.$oid);
-      fetchImages();
+      setUserPoints(user.points);
     }
+    fetchImages();
   }, [router]);
 
   const fetchNames = async (personIds) => {
@@ -117,33 +115,28 @@ const KMFPage = () => {
     'bg-gradient-to-r from-orange-500 to-yellow-500',
   ];
 
-  const handleError = (message) => {
-    console.error(message);
-    router.push('/');
-  };
-
   const handleSubmit = async () => {
     setIsLoading(true);
     const uniqueSelections = new Set(Object.values(selections));
     if (uniqueSelections.size === 3) {
       try {
         const userCookie = Cookies.get('user');
-        if (userCookie) {
-          const user = JSON.parse(userCookie);
+        const user = userCookie ? JSON.parse(userCookie) : null;
 
-          const submitResponse = await fetch('/api/kmfApi', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              userId: user._id,
-              selections: selections
-            }),
-          });
+        const submitResponse = await fetch('/api/kmfApi', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId: user ? user._id : null,
+            selections: selections
+          }),
+        });
 
-          if (submitResponse.ok) {
-            setShowImages(false);
-            setShowSubmitButton(false);
+        if (submitResponse.ok) {
+          setShowImages(false);
+          setShowSubmitButton(false);
 
+          if (user) {
             const pointsResponse = await fetch('/api/addPoint', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
@@ -180,19 +173,29 @@ const KMFPage = () => {
             } else {
               console.error('Failed to update points');
             }
-
-            setSelections({ kiss: null, marry: null, fade: null });
           } else {
-            console.error('Submission failed');
+            setShowPointsDisplay(true);
+            setTimeout(async () => {
+              setShowPointsDisplay(false);
+              setShowImages(true);
+              setShowSubmitButton(true);
+              setIsLoading(false);
+              // Clear images before fetching new ones
+              setImages([]);
+              // Fetch new images
+              await fetchImages();
+            }, 1000); // Adjust the duration as needed
           }
+
+          setSelections({ kiss: null, marry: null, fade: null });
         } else {
-          console.error('User information not found in cookie');
+          console.error('Submission failed');
         }
       } catch (error) {
         console.error('Error during submission:', error);
       }
     } else {
-      console.error('Please make a unique selection for each category');
+      console.error('Please make a unique selection for     each category');
     }
   };
 

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 
-const Login = () => {
+const Login = ({ onLoginSuccess }) => {
   const [loginInfo, setLoginInfo] = useState({ username: '', password: '' });
   const router = useRouter();
 
@@ -40,6 +40,7 @@ const Login = () => {
         console.error('Failed to fetch user points:', pointsResponse.statusText);
       }
 
+      onLoginSuccess(); // Call the success handler
       router.push('/kmf'); // Redirect to kmf.js page
     } else {
       alert('Login failed: ' + data.message);
@@ -50,7 +51,7 @@ const Login = () => {
     <div className="container mx-auto p-4">
       <div className="flex justify-center">
         <div className="w-full max-w-xs">
-          <form onSubmit={handleLoginSubmit} className="bg-black shadow-md rounded px-8 pt-6 pb-8 mb-4 border-2 border-pink-600">
+          <form onSubmit={handleLoginSubmit} className=          "bg-black shadow-md rounded px-8 pt-6 pb-8 mb-4 border-2 border-pink-600">
             <h2 className="mb-4 font-bold text-lg text-pink-600">Login</h2>
             <div className="mb-4">
               <label className="block text-pink-500 text-sm font-bold mb-2" htmlFor="username">
@@ -84,8 +85,6 @@ const Login = () => {
       </div>
     </div>
   );
-  
-  
 };
 
 export default Login;
