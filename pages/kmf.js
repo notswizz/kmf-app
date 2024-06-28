@@ -3,8 +3,10 @@ import Cookies from 'js-cookie';
 import PicModal from '../components/picModal';
 import NavBar from '../components/navBar';
 import { useRouter } from 'next/router';
+import { useSound } from '../components/SoundContext'; 
 
 const KMFPage = () => {
+
   const router = useRouter();
   const [images, setImages] = useState([]);
   const [selections, setSelections] = useState({ kiss: null, marry: null, fade: null });
@@ -17,6 +19,10 @@ const KMFPage = () => {
   const [currentImageId, setCurrentImageId] = useState('');
   const [userId, setUserId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isMuted, setIsMuted] = useState(false); // State to track mute status
+
+ 
+
 
   useEffect(() => {
     const userCookie = Cookies.get('user');
@@ -92,6 +98,22 @@ const KMFPage = () => {
 
   const handleSelection = (category, imageId) => {
     setSelections({ ...selections, [category]: imageId });
+
+    if (!isMuted) { // Use isMuted instead of soundIsMuted
+      switch (category) {
+        case 'kiss':
+          new Audio('/kiss.wav').play();
+          break;
+        case 'marry':
+          new Audio('/bells.wav').play();
+          break;
+        case 'fade':
+          new Audio('/click.mp3').play();
+          break;
+        default:
+          break;
+      }
+    }
   };
 
   const isSubmitVisible = () => {
@@ -191,6 +213,11 @@ const KMFPage = () => {
         } else {
           console.error('Submission failed');
         }
+
+        if (!isMuted && typeof window !== 'undefined') {
+          new Audio('/win.wav').play();
+        }
+
       } catch (error) {
         console.error('Error during submission:', error);
       }
@@ -201,7 +228,7 @@ const KMFPage = () => {
 
   return (
     <>
-      <NavBar />
+   <NavBar handleMuteToggle={() => setIsMuted(!isMuted)} isMuted={isMuted} />
       {showPointsDisplay && (
         <div className="flex justify-center items-center min-h-screen bg-gray-900">
           <div className="w-[375px] h-[667px] bg-gray-800 rounded-lg shadow-2xl overflow-hidden border border-gray-700">

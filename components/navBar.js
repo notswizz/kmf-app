@@ -3,8 +3,10 @@ import Cookies from 'js-cookie';
 import UserModal from './UserModal'; // Adjust the import path as necessary
 import Login from './loginForm';
 import Register from './registerForm';
+import { useSound } from '../components/SoundContext'; // Import useSound hook
 
 const Navbar = () => {
+  const { isMuted, toggleMute } = useSound(); // Get isMuted and toggleMute from SoundContext
   const [username, setUsername] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
@@ -77,7 +79,12 @@ const Navbar = () => {
                 Logout
               </button>
             )}
-           
+            <button
+              onClick={toggleMute} // Toggle mute functionality
+              className="font-bold text-white py-1 px-3 rounded-full transition duration-300 ease-in-out shadow-lg transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 bg-transparent border border-purple-500 hover:bg-purple-500 hover:text-black"
+            >
+              {isMuted ? 'Unmute' : 'Mute'}
+            </button>
           </div>
         </nav>
       </header>
