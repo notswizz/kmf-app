@@ -11,12 +11,12 @@ export default async function handler(req, res) {
       const db = await connectToDatabase();
       const imagesCollection = db.collection('images');
 
-      // Fetch one image from the database
-      const image = await imagesCollection.findOne({});
+      // Fetch a random image from the database
+      const randomImage = await imagesCollection.aggregate([{ $sample: { size: 1 } }]).toArray();
 
       // Respond with the image URL
-      if (image) {
-        res.status(200).json({ url: image.url });
+      if (randomImage.length > 0) {
+        res.status(200).json({ url: randomImage[0].url });
       } else {
         res.status(404).json({ message: 'No images found' });
       }
