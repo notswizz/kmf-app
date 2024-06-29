@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 import PicModal from '../components/picModal';
 import NavBar from '../components/navBar';
 import { useRouter } from 'next/router';
-import { useSound } from '../components/SoundContext'; 
+
 
 const KMFPage = () => {
 
@@ -99,21 +99,7 @@ const KMFPage = () => {
   const handleSelection = (category, imageId) => {
     setSelections({ ...selections, [category]: imageId });
 
-    if (!isMuted) { // Use isMuted instead of soundIsMuted
-      switch (category) {
-        case 'kiss':
-          new Audio('/kiss.wav').play();
-          break;
-        case 'marry':
-          new Audio('/bells.wav').play();
-          break;
-        case 'fade':
-          new Audio('/click.mp3').play();
-          break;
-        default:
-          break;
-      }
-    }
+  
   };
 
   const isSubmitVisible = () => {
@@ -214,9 +200,7 @@ const KMFPage = () => {
           console.error('Submission failed');
         }
 
-        if (!isMuted && typeof window !== 'undefined') {
-          new Audio('/win.wav').play();
-        }
+     
 
       } catch (error) {
         console.error('Error during submission:', error);
@@ -243,7 +227,7 @@ const KMFPage = () => {
         </div>
       )}
   
-      <div className="container mx-auto p-4 w-[375px]">
+  <div className="container mx-auto p-4 w-[375px] border-4 border-dashed border-pink-500 m-4 rounded-lg">
         {showImages && (
           <div className="grid grid-cols-1 gap-6">
             {images.map((image, index) => (
