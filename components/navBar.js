@@ -49,22 +49,22 @@ const Navbar = () => {
 
   return (
     <>
-      <header className="bg-black text-white py-1 shadow-md">
+      <header className="bg-gradient-to-r from-purple-500 to-pink-500 text-white py-4 shadow-md">
         <nav className="container mx-auto flex justify-between items-center px-4 sm:px-6 lg:px-8">
-          <img src="/KMF.png" alt="KMF Logo" className="h-8" /> {/* Adjust image size as needed */}
-          <p className="text-gray-400">{username ? `${username}` : 'Not Logged In'}</p>
+          <img src="/KMF.png" alt="KMF Logo" className="h-10 rounded-full" /> {/* Adjust image size as needed */}
+          <p className="text-lg font-semibold">{username ? `${username}` : 'KMF'}</p>
           <div className="flex space-x-4">
             {!username ? (
               <>
                 <button
                   onClick={handleLoginToggle}
-                  className="font-bold text-white py-1 px-3 rounded-full transition duration-300 ease-in-out shadow-lg transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50 bg-transparent border border-yellow-500 hover:bg-yellow-500 hover:text-black"
+                  className="font-bold text-white py-2 px-4 rounded-full transition duration-300 ease-in-out shadow-lg transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50 bg-transparent border border-yellow-500 hover:bg-yellow-500 hover:text-black"
                 >
                   Login
                 </button>
                 <button
                   onClick={handleRegisterToggle}
-                  className="font-bold text-white py-1 px-3 rounded-full transition duration-300 ease-in-out shadow-lg transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50 bg-transparent border border-yellow-500 hover:bg-yellow-500 hover:text-black"
+                  className="font-bold text-white py-2 px-4 rounded-full transition duration-300 ease-in-out shadow-lg transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50 bg-transparent border border-yellow-500 hover:bg-yellow-500 hover:text-black"
                 >
                   Register
                 </button>
@@ -72,7 +72,7 @@ const Navbar = () => {
             ) : (
               <button
                 onClick={handleLogout}
-                className="font-bold text-white py-1 px-3 rounded-full transition duration-300 ease-in-out shadow-lg transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 bg-transparent border border-red-500 hover:bg-red-500 hover:text-black"
+                className="font-bold text-white py-2 px-4 rounded-full transition duration-300 ease-in-out shadow-lg transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 bg-transparent border border-red-500 hover:bg-red-500 hover:text-black"
               >
                 Logout
               </button>
@@ -83,11 +83,11 @@ const Navbar = () => {
       <UserModal show={showModal} onClose={handleModalToggle} />
       {showLogin && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-4 rounded-lg shadow-lg">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
             <Login onLoginSuccess={handleLoginSuccess} />
             <button
               onClick={handleLoginToggle}
-              className="mt-4 bg-red-500 text-white py-2 px-4 rounded-full"
+              className="mt-4 w-full bg-red-500 text-white py-2 px-4 rounded-full transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
             >
               Close
             </button>
@@ -96,11 +96,11 @@ const Navbar = () => {
       )}
       {showRegister && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-4 rounded-lg shadow-lg">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
             <Register onRegisterSuccess={handleLoginSuccess} />
             <button
               onClick={handleRegisterToggle}
-              className="mt-4 bg-red-500 text-white py-2 px-4 rounded-full"
+              className="mt-4 w-full bg-red-500 text-white py-2 px-4 rounded-full transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
             >
               Close
             </button>
