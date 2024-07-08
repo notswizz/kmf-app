@@ -26,7 +26,7 @@ const Gallery = ({ images, selections, setSelections, userId, userPoints, setUse
       <div className="flex overflow-x-auto snap-x snap-mandatory w-full h-full">
         {images.map((image, index) => (
           <div key={index} className="snap-center flex-shrink-0 w-full h-full flex flex-col items-center justify-center mx-4 bg-white rounded-lg shadow-lg transition transform hover:scale-105">
-            <div className="w-full h-full flex items-center justify-center bg-gray-200 rounded-t-lg overflow-hidden">
+            <div className="w-full h-full flex items-center justify-center bg-gray-200 rounded-t-lg overflow-hidden" style={{ width: '100%', height: '70vh' }}>
               <img
                 className="w-full h-full object-contain cursor-pointer"
                 src={image.url}
