@@ -25,10 +25,10 @@ const Gallery = ({ images, selections, setSelections, userId, userPoints, setUse
     <>
       <div className="flex overflow-x-auto snap-x snap-mandatory w-full h-full">
         {images.map((image, index) => (
-          <div key={index} className="snap-center flex-shrink-0 w-72 h-full flex flex-col items-center justify-center mx-4 bg-white rounded-lg shadow-lg transition transform hover:scale-105">
-            <div className="w-full h-72 flex items-center justify-center bg-gray-200 rounded-t-lg overflow-hidden">
+          <div key={index} className="snap-center flex-shrink-0 w-full h-full flex flex-col items-center justify-center mx-4 bg-white rounded-lg shadow-lg transition transform hover:scale-105">
+            <div className="w-full h-full flex items-center justify-center bg-gray-200 rounded-t-lg overflow-hidden">
               <img
-                className="max-w-full max-h-full object-contain cursor-pointer"
+                className="w-full h-full object-contain cursor-pointer"
                 src={image.url}
                 alt="Image"
                 onClick={() => openModal(image.url, image._id)}
