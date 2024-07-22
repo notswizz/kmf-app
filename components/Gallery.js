@@ -25,7 +25,7 @@ const Gallery = ({ images, selections, setSelections, userId, userPoints, setUse
     <>
       <div className="flex overflow-x-auto snap-x snap-mandatory w-full h-full">
         {images.map((image, index) => (
-          <div key={index} className="snap-center flex-shrink-0 w-full h-full flex flex-col items-center justify-center mx-4 bg-white rounded-lg shadow-lg transition transform hover:scale-105">
+          <div key={index} className="snap-center flex-shrink-0 w-full h-full flex flex-col items-center justify-center mx-4 bg-white rounded-lg shadow-lg">
             <div className="w-full h-full flex items-center justify-center bg-gray-200 rounded-t-lg overflow-hidden" style={{ width: '100%', height: '70vh' }}>
               <img
                 className="w-full h-full object-contain cursor-pointer"
@@ -37,19 +37,19 @@ const Gallery = ({ images, selections, setSelections, userId, userPoints, setUse
             <div className="flex justify-center space-x-3 mt-4 mb-6 bg-gray-200 p-4 rounded-b-lg shadow-md w-full">
               <button
                 onClick={() => handleSelection('kiss', image._id)}
-                className={`${selections.kiss === image._id ? "bg-red-500" : "bg-gray-500"} text-white font-bold py-2 px-4 rounded-full transition duration-300`}
+                className={`${selections.kiss === image._id ? "bg-red-500" : "bg-gray-500"} text-white font-bold py-2 px-4 rounded-full`}
               >
                 Kiss
               </button>
               <button
                 onClick={() => handleSelection('marry', image._id)}
-                className={`${selections.marry === image._id ? "bg-green-500" : "bg-gray-500"} text-white font-bold py-2 px-4 rounded-full transition duration-300`}
+                className={`${selections.marry === image._id ? "bg-green-500" : "bg-gray-500"} text-white font-bold py-2 px-4 rounded-full`}
               >
                 Marry
               </button>
               <button
                 onClick={() => handleSelection('fade', image._id)}
-                className={`${selections.fade === image._id ? "bg-blue-500" : "bg-gray-500"} text-white font-bold py-2 px-4 rounded-full transition duration-300`}
+                className={`${selections.fade === image._id ? "bg-blue-500" : "bg-gray-500"} text-white font-bold py-2 px-4 rounded-full`}
               >
                 Fade
               </button>

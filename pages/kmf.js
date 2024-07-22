@@ -100,51 +100,52 @@ const KMFPage = () => {
     <>
       <NavBar handleMuteToggle={() => setIsMuted(!isMuted)} isMuted={isMuted} />
       {showPointsDisplay && (
-  <div className="fixed inset-0 flex justify-center items-center bg-gray-900 bg-opacity-75 z-50">
-    <div className="w-[375px] h-[667px] bg-gray-800 rounded-lg shadow-2xl overflow-hidden border border-gray-700">
-      <div className="flex justify-center items-center h-full">
-        <div className="text-center p-8 bg-gray-700 rounded-lg shadow-xl w-full">
-          <h2 className="text-4xl font-bold text-white mb-4">Points</h2>
-          <p className="text-3xl font-semibold text-yellow-300 animate-pulse">{userPoints}</p>
-          <img src="/zoomkmf.gif" alt="Animated Celebration" className="mt-4 w-3/4 mx-auto rounded-lg shadow-md" />
+        <div className="fixed inset-0 flex justify-center items-center bg-gradient-to-b from-gray-900 to-black bg-opacity-75 z-50">
+          <div className="w-[375px] h-[667px] bg-gray-800 rounded-lg shadow-2xl overflow-hidden border border-gray-700">
+            <div className="flex justify-center items-center h-full">
+              <div className="text-center p-8 bg-gray-700 rounded-lg shadow-xl w-full">
+                <h2 className="text-4xl font-bold text-white mb-4">Points</h2>
+                <p className="text-3xl font-semibold text-yellow-300 animate-pulse">{userPoints}</p>
+                <img src="/zoomkmf.gif" alt="Animated Celebration" className="mt-4 w-3/4 mx-auto rounded-lg shadow-md" />
+              </div>
+            </div>
+          </div>
         </div>
+      )}
+      <div className="w-full h-full flex flex-col justify-center items-center p-4 space-y-8">
+        {showImages && (
+          <div className="w-full max-w-4xl">
+            <Gallery
+              images={images}
+              selections={selections}
+              setSelections={setSelections}
+              userId={userId}
+              userPoints={userPoints}
+              setUserPoints={setUserPoints}
+            />
+          </div>
+        )}
+        {isSubmitVisible() && showSubmitButton && (
+          <div className="w-full max-w-md">
+            <Submit
+              selections={selections}
+              setSelections={setSelections}
+              setShowImages={setShowImages}
+              setShowSubmitButton={setShowSubmitButton}
+              setIsLoading={setIsLoading}
+              setShowPointsDisplay={setShowPointsDisplay}
+              setUserPoints={setUserPoints}
+              fetchImages={fetchImages}
+              updatePoints={updatePoints}
+              isLoading={isLoading}
+              setImages={setImages}
+            />
+          </div>
+        )}
       </div>
-    </div>
-  </div>
-)}
-<div className="w-full h-full flex flex-col justify-center items-center p-4 space-y-8">
-  {showImages && (
-    <div className="w-full max-w-4xl">
-      <Gallery
-        images={images}
-        selections={selections}
-        setSelections={setSelections}
-        userId={userId}
-        userPoints={userPoints}
-        setUserPoints={setUserPoints}
-      />
-    </div>
-  )}
-  {isSubmitVisible() && showSubmitButton && (
-    <div className="w-full max-w-md">
-      <Submit
-        selections={selections}
-        setSelections={setSelections}
-        setShowImages={setShowImages}
-        setShowSubmitButton={setShowSubmitButton}
-        setIsLoading={setIsLoading}
-        setShowPointsDisplay={setShowPointsDisplay}
-        setUserPoints={setUserPoints}
-        fetchImages={fetchImages}
-        updatePoints={updatePoints}
-        isLoading={isLoading}
-        setImages={setImages}
-      />
-    </div>
-  )}
-</div>
     </>
   );
+  
 };
 
 export default KMFPage;

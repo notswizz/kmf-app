@@ -1,7 +1,15 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import Cookies from 'js-cookie';
 
 const Submit = ({ selections, setSelections, setShowImages, setShowSubmitButton, setIsLoading, setShowPointsDisplay, setUserPoints, fetchImages, updatePoints, isLoading, setImages }) => {
+  const buttonRef = useRef(null);
+
+  useEffect(() => {
+    if (buttonRef.current) {
+      buttonRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [setShowSubmitButton]);
+
   const handleSubmit = async () => {
     setIsLoading(true);
     const uniqueSelections = new Set(Object.values(selections));
@@ -82,10 +90,11 @@ const Submit = ({ selections, setSelections, setShowImages, setShowSubmitButton,
   };
 
   return (
-    <div className="text-center mt-8">
+    <div className="text-center ">
       <button
+        ref={buttonRef}
         onClick={handleSubmit}
-        className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-4 px-6 rounded-full transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50"
+        className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-8 px-6 rounded-full transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50"
         disabled={isLoading}
       >
         {isLoading ? (
